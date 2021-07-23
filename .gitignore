@@ -158,3 +158,5 @@ Thumbs.db #thumbnail cache on Windows
 # profiling data
 .prof
 
+# Misc
+technical.txt
