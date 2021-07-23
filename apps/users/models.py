@@ -4,4 +4,4 @@ import uuid
 
 
 class User(AbstractUser):
-	uuid = models.UUIDField(default=uuid.uuid4, unique=True)
+    uuid = models.UUIDField(default=uuid.uuid4, unique=True)
