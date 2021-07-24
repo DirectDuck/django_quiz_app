@@ -134,8 +134,15 @@ AUTHENTICATION_BACKENDS = [
 SITE_ID = 1
 
 
+# Email
+
+EMAIL_BACKEND = "django.core.mail.backends.console.EmailBackend"
+
+
 # Allauth
+
 LOGIN_REDIRECT_URL = "pages:home"
+ACCOUNT_EMAIL_REQUIRED = True
 
 
 # Django Crispy Forms
