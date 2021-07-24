@@ -1,9 +1,22 @@
-<!DOCTYPE html>
-<html>
-<head>
-	<title></title>
-</head>
-<body>
-<h1>Hello world!</h1>
-</body>
-</html>
+{% extends '_base.html' %}
+
+{% load static %}
+
+
+{% block title %}DPA - Home{% endblock title %}
+
+{% block content %}
+<div class="row gx-5 justify-content-center">
+    <div class="col-lg-8 col-xl-6">
+        <div class="text-center">
+            <h2 class="fw-bolder mb-5">Welcome to Django Polls Advanced!</h2>
+            <p class="lead fw-normal text-muted mb-5">
+            	This project was inspired by official <a href="https://docs.djangoproject.com/en/3.2/intro/" target="_blank">Django Polls</a> tutorial. Feel free to examine the source code!<br>
+            </p>
+            <a href="#">
+        		<img src="{% static 'pages/assets/github_mark3.png' %}"><img src="{% static 'pages/assets/github.png' %}">
+        	</a>
+        </div>
+    </div>
+</div>
+{% endblock content %}
