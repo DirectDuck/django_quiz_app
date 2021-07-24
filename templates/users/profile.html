@@ -1,0 +1,21 @@
+{% extends '_base.html' %}
+
+
+{% block title %}Django Polls Advanced{% endblock title %}
+
+{% block content %}
+<div class="row gx-5 justify-content-center">
+    <div class="col-lg-8 col-xl-6">
+        <div class='text-center'>
+            <h2>{{ user.username }}'s profile</h2>
+        </div>
+        <div class="my-4">
+            <div class="d-flex align-items-center pt-3 fs-5">
+                <p class="font-weight-bold me-2"><b>E-mail:</b></p>
+                <p>{{ user.email }}</p>
+            </div>
+            <a class="btn btn-outline-secondary" href="{% url 'account_change_password' %}">Change password</a>
+        </div>
+    </div>
+</div>
+{% endblock content %}

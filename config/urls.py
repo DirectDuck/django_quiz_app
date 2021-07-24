@@ -10,6 +10,7 @@ urlpatterns = [
     path("", include("allauth.urls")),
     # Local
     path("", include("apps.pages.urls", namespace="pages")),
+    path("", include("apps.users.urls", namespace="users")),
 ]
 
 if settings.DEBUG:

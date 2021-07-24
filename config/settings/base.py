@@ -149,6 +149,9 @@ EMAIL_BACKEND = "django.core.mail.backends.console.EmailBackend"
 ACCOUNT_LOGOUT_REDIRECT_URL = "account_login"
 ACCOUNT_EMAIL_REQUIRED = True
 
+# To prevent users from spamming email verification
+ACCOUNT_EMAIL_CONFIRMATION_HMAC = False
+
 
 # Django Crispy Forms
 

@@ -42,7 +42,7 @@
                             <li class="nav-item dropdown rounded border mx-1">
                                 <a class="nav-link dropdown-toggle" id="navbarDropdownBlog" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">{{ request.user.username }}</a>
                                 <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdownBlog">
-                                    <li><a class="dropdown-item" href="#">Settings</a></li>
+                                    <li><a class="dropdown-item" href="{% url 'users:profile' %}">Profile</a></li>
                                     <li><a class="dropdown-item" href="{% url 'account_logout' %}">Log out</a></li>
                                 </ul>
                             </li>
@@ -56,12 +56,12 @@
             <!-- Messages (Adapted from django-bootstrap-v5) -->
             {% for message in messages %}
                 {% if message.tags == 'error'%}
-                    <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                    <div class="alert alert-danger alert-dismissible fade show text-center" role="alert">
                         <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="close"></button>
                         {{ message }}
                     </div>
                 {% else %}
-                    <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
+                    <div class="alert alert-{{ message.tags }} alert-dismissible fade show text-center" role="alert">
                         <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="close"></button>
                         {{ message }}
                     </div>
