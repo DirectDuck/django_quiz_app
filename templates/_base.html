@@ -29,6 +29,7 @@
                         <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
                             <li class="nav-item"><a class="nav-link" href="{% url 'pages:home' %}">Home</a></li>
                             <li class="nav-item"><a class="nav-link" href="#">Explore</a></li>
+                            <li class="nav-item"><a class="nav-link" href="#">Results</a></li>
                             <li class="nav-item"><a class="nav-link" href="#">Review</a></li>
                             <li class="nav-item dropdown">
                                 <a class="nav-link dropdown-toggle" id="navbarDropdownBlog" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">Polls</a>
@@ -38,7 +39,7 @@
                                 </ul>
                             </li>
                             {% if request.user.is_authenticated %}
-                            <li class="nav-item dropdown">
+                            <li class="nav-item dropdown rounded border">
                                 <a class="nav-link dropdown-toggle" id="navbarDropdownBlog" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">{{ request.user.username }}</a>
                                 <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdownBlog">
                                     <li><a class="dropdown-item" href="#">Settings</a></li>
