@@ -134,6 +134,10 @@ AUTHENTICATION_BACKENDS = [
 SITE_ID = 1
 
 
+# Allauth
+LOGIN_REDIRECT_URL = "pages:home"
+
+
 # Django Crispy Forms
 
 CRISPY_ALLOWED_TEMPLATE_PACKS = "bootstrap5"
