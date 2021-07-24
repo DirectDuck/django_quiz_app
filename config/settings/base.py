@@ -26,7 +26,12 @@ INSTALLED_APPS = [
     "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.staticfiles",
+    "django.contrib.sites",
     # 3rd-party
+    "allauth",
+    "allauth.account",
+    "crispy_forms",
+    "crispy_bootstrap5",
     # local
     "apps.core",
     "apps.users",
@@ -113,4 +118,24 @@ DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
 
 # User settings
+
 AUTH_USER_MODEL = "users.User"
+
+# Authentication
+
+AUTHENTICATION_BACKENDS = [
+    "django.contrib.auth.backends.ModelBackend",
+    "allauth.account.auth_backends.AuthenticationBackend",
+]
+
+
+# Site
+
+SITE_ID = 1
+
+
+# Django Crispy Forms
+
+CRISPY_ALLOWED_TEMPLATE_PACKS = "bootstrap5"
+
+CRISPY_TEMPLATE_PACK = "bootstrap5"
