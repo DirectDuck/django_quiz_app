@@ -3,13 +3,13 @@
 {% load crispy_forms_tags %}
 
 
-{% block title %}Log out | DPA{% endblock title %}
+{% block title %}Log Out | DPA{% endblock title %}
 
 {% block content %}
 <div class="row gx-5 justify-content-center">
     <div class="col-lg-8 col-xl-6">
         <div class='text-center'>
-            <h2>Log out</h2>
+            <h2>Log Out</h2>
             <p class="mt-3">Are you sure you want to log out?</p>
         </div>
         <form method="post" class="my-4">{% csrf_token %}
