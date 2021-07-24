@@ -1,9 +1,18 @@
 from django.conf import settings
 from django.contrib import admin
 from django.urls import path, include
+from django.views.defaults import page_not_found
 
 
-urlpatterns = [
+# Disable unused urls from 3rd party libraries
+disabled_urls = [
+    path("email/", page_not_found, kwargs={"exception": Exception("Page not Found")}),
+    path(
+        "inactive/", page_not_found, kwargs={"exception": Exception("Page not Found")}
+    ),
+]
+
+urlpatterns = disabled_urls + [
     # Django
     path("admin/", admin.site.urls),
     # 3rd-party
