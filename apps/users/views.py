@@ -33,6 +33,7 @@ def user_profile_view(request):
 @login_required
 def resend_verification_email_view(request):
     user_email = EmailAddress.objects.get(user=request.user)
+
     if not user_email.verified:
         user_email.send_confirmation(request)
         messages.add_message(
