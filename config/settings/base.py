@@ -128,6 +128,8 @@ AUTHENTICATION_BACKENDS = [
     "allauth.account.auth_backends.AuthenticationBackend",
 ]
 
+LOGIN_REDIRECT_URL = "pages:home"
+LOGIN_URL = "account_login"
 
 # Site
 
@@ -141,7 +143,7 @@ EMAIL_BACKEND = "django.core.mail.backends.console.EmailBackend"
 
 # Allauth
 
-LOGIN_REDIRECT_URL = "pages:home"
+ACCOUNT_LOGOUT_REDIRECT_URL = "account_login"
 ACCOUNT_EMAIL_REQUIRED = True
 
 

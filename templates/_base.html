@@ -27,11 +27,11 @@
                     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation"><span class="navbar-toggler-icon"></span></button>
                     <div class="collapse navbar-collapse" id="navbarSupportedContent">
                         <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
-                            <li class="nav-item"><a class="nav-link" href="{% url 'pages:home' %}">Home</a></li>
-                            <li class="nav-item"><a class="nav-link" href="#">Explore</a></li>
-                            <li class="nav-item"><a class="nav-link" href="#">Results</a></li>
-                            <li class="nav-item"><a class="nav-link" href="#">Review</a></li>
-                            <li class="nav-item dropdown">
+                            <li class="nav-item mx-1"><a class="nav-link" href="{% url 'pages:home' %}">Home</a></li>
+                            <li class="nav-item mx-1"><a class="nav-link" href="#">Explore</a></li>
+                            <li class="nav-item mx-1"><a class="nav-link" href="#">Results</a></li>
+                            <li class="nav-item mx-1"><a class="nav-link" href="#">Review</a></li>
+                            <li class="nav-item dropdown mx-1">
                                 <a class="nav-link dropdown-toggle" id="navbarDropdownBlog" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">Polls</a>
                                 <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdownBlog">
                                     <li><a class="dropdown-item" href="#">List</a></li>
@@ -39,7 +39,7 @@
                                 </ul>
                             </li>
                             {% if request.user.is_authenticated %}
-                            <li class="nav-item dropdown rounded border">
+                            <li class="nav-item dropdown rounded border mx-1">
                                 <a class="nav-link dropdown-toggle" id="navbarDropdownBlog" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">{{ request.user.username }}</a>
                                 <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdownBlog">
                                     <li><a class="dropdown-item" href="#">Settings</a></li>
@@ -47,7 +47,7 @@
                                 </ul>
                             </li>
                             {% else %}
-                            <li class="nav-item"><a class="nav-link" href="{% url 'account_login' %}">Login</a></li>
+                            <li class="nav-item mx-1"><a class="nav-link" href="{% url 'account_login' %}">Login</a></li>
                             {% endif %}
                         </ul>
                     </div>
@@ -55,10 +55,17 @@
             </nav>
             <!-- Messages (Adapted from django-bootstrap-v5) -->
             {% for message in messages %}
-                <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
-                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="close"></button>
-                    {{ message }}
-                </div>
+                {% if message.tags == 'error'%}
+                    <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="close"></button>
+                        {{ message }}
+                    </div>
+                {% else %}
+                    <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="close"></button>
+                        {{ message }}
+                    </div>
+                {% endif %}
             {% endfor %}
             <!-- Content section-->
             <section class="py-5">
