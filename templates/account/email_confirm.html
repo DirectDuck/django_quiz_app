@@ -1,0 +1,33 @@
+{% extends '_base.html' %}
+
+{% load crispy_forms_tags %}
+{% load account %}
+
+
+{% block title %}Email Confirmation | DPA{% endblock title %}
+
+{% block content %}
+<div class="row gx-5 justify-content-center">
+    <div class="col-lg-8 col-xl-6">
+        <div class='text-center'>
+            <h2>Confirm E-mail Address</h2>
+        </div>
+
+        {% if confirmation %}
+            {% user_display confirmation.email_address.user as user_display %}
+            <p class='text-center mt-3'>Please confirm that <a href="mailto:{{ confirmation.email_address.email }}">{{ confirmation.email_address.email }}</a> is an e-mail address for user {{ user_display }}.</p>
+
+            <form method="post" class="my-4">{% csrf_token %}
+                {{ form|crispy }}
+                <div class="d-flex justify-content-center">
+                    <button class="btn btn-outline-primary" type="submit">Confirm</button>
+                </div>
+            </form>
+        {% else %}
+            {% url 'account_email' as email_url %}
+            <p class='text-center mt-3'>This e-mail confirmation link expired or is invalid. Please <a href="{{ email_url }}">issue a new e-mail confirmation request</a>.</p>
+        {% endif %}
+
+    </div>
+</div>
+{% endblock content %}
