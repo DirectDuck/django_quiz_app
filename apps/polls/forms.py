@@ -25,3 +25,9 @@ class PollItemCreateForm(forms.ModelForm):
     class Meta:
         model = models.PollItem
         fields = ("question",)
+
+
+class PollItemEditForm(forms.ModelForm):
+    class Meta:
+        model = models.PollItem
+        fields = ("question",)

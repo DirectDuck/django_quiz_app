@@ -175,3 +175,66 @@ def pollitem_create_view(request, slug):
     }
 
     return TemplateResponse(request, "polls/item_create.html", context)
+
+
+@login_required
+def pollitem_edit_view(request, slug, index):
+    poll = get_object_or_404(
+        models.Poll.objects.all(),
+        slug=slug,
+    )
+
+    if not (request.user.is_staff or request.user == poll.author):
+        raise PermissionDenied
+
+    # Getting PollItem
+    poll_item = get_object_or_404(
+        models.PollItem.objects.all(),
+        poll__slug=slug,
+        index=index,
+    )
+
+    # Creating formset for PollItemAnswer
+    PollItemAnswerFormset = inlineformset_factory(
+        models.PollItem,
+        models.PollItemAnswer,
+        formset=formsets.PollItemAnswerFormSet,
+        fields=(
+            "text",
+            "correct",
+        ),
+        labels={"text": "Answer"},
+        extra=0,
+        min_num=models.PollItem.MIN_ANSWERS,
+        max_num=models.PollItem.MAX_ANSWERS,
+        can_delete=True,
+    )
+
+    if request.POST:
+        # Loading form and formset with POST data
+        poll_item_form = forms.PollItemEditForm(request.POST, instance=poll_item)
+        poll_item_answer_formset = PollItemAnswerFormset(
+            request.POST, instance=poll_item
+        )
+
+        if poll_item_form.is_valid():
+            # Saving PollItem
+            poll_item = poll_item_form.save()
+
+            if poll_item_answer_formset.is_valid():
+                # Saving formset
+                poll_item_answer_formset.save()
+                return redirect("polls:detail", slug=poll.slug)
+    else:
+        # Initializing form and formset with instances
+        poll_item_form = forms.PollItemEditForm(instance=poll_item)
+        poll_item_answer_formset = PollItemAnswerFormset(instance=poll_item)
+
+    context = {
+        "poll": poll,
+        "poll_item": poll_item,
+        "poll_item_form": poll_item_form,
+        "poll_item_answer_formset": poll_item_answer_formset,
+    }
+
+    return TemplateResponse(request, "polls/item_edit.html", context)

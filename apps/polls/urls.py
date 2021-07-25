@@ -14,4 +14,5 @@ urlpatterns = [
     path("<slug:slug>/edit/", views.poll_edit_view, name="edit"),
     path("<slug:slug>/delete/", views.poll_delete_view, name="delete"),
     path("<slug:slug>/item/create/", views.pollitem_create_view, name="item_create"),
+    path("<slug:slug>/item/<int:index>/", views.pollitem_edit_view, name="item_edit"),
 ]

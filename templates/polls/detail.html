@@ -23,7 +23,7 @@
 <div class="col-xl-6 offset-xl-3">
     <div class="list-group text-center">
         {% for poll_item in poll_items %}
-            <a href="#" class="list-group-item list-group-item-action mb-2 shadow-sm">
+            <a href="{% url 'polls:item_edit' poll.slug poll_item.index %}" class="list-group-item list-group-item-action mb-2 shadow-sm">
                 {{ poll_item.question }}
             </a>
         {% endfor %}
