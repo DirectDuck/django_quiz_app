@@ -49,8 +49,11 @@ def poll_detail_view(request, slug):
     if not (request.user.is_staff or request.user == poll.author):
         raise PermissionDenied
 
+    poll_items = poll.items.order_by("index")
+
     context = {
         "poll": poll,
+        "poll_items": poll_items,
     }
 
     return TemplateResponse(request, "polls/detail.html", context)
