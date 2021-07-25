@@ -1,14 +1,20 @@
 from django.conf import settings
 from django.contrib import admin
 from django.urls import path, include
-from django.views.defaults import page_not_found
+from django.views import defaults
 
 
 # Disable unused urls from 3rd party libraries
 disabled_urls = [
-    path("email/", page_not_found, kwargs={"exception": Exception("Page not Found")}),
     path(
-        "inactive/", page_not_found, kwargs={"exception": Exception("Page not Found")}
+        "email/",
+        defaults.page_not_found,
+        kwargs={"exception": Exception("Page not Found")},
+    ),
+    path(
+        "inactive/",
+        defaults.page_not_found,
+        kwargs={"exception": Exception("Page not Found")},
     ),
 ]
 
@@ -23,6 +29,27 @@ urlpatterns = disabled_urls + [
 ]
 
 if settings.DEBUG:
+    # This allows the error pages to be debugged during development, just visit
+    # these url in browser to see how these error pages look like.
+    urlpatterns += [
+        path(
+            "400/",
+            defaults.bad_request,
+            kwargs={"exception": Exception("Bad Request!")},
+        ),
+        path(
+            "403/",
+            defaults.permission_denied,
+            kwargs={"exception": Exception("Permission Denied")},
+        ),
+        path(
+            "404/",
+            defaults.page_not_found,
+            kwargs={"exception": Exception("Page not Found")},
+        ),
+        path("500/", defaults.server_error),
+    ]
+
     if "debug_toolbar" in settings.INSTALLED_APPS:
         import debug_toolbar
 

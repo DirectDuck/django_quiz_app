@@ -1,0 +1,15 @@
+{% extends '_base.html' %}
+
+
+{% block title %}Permission Denied | DPA{% endblock title %}
+
+{% block content %}
+<div class="row gx-5 justify-content-center">
+    <div class="col-lg-8 col-xl-6">
+        <div class='text-center'>
+            <h2>{% if exception %}{{ exception }}{% else %}Permission Denied{% endif %}</h2>
+            <p>You're not allowed to access this page.</p>
+        </div>
+    </div>
+</div>
+{% endblock content %}
