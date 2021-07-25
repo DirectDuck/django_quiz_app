@@ -53,3 +53,51 @@ def poll_detail_view(request, slug):
     }
 
     return TemplateResponse(request, "polls/detail.html", context)
+
+
+@login_required
+def poll_edit_view(request, slug):
+    poll = get_object_or_404(
+        models.Poll.objects.all(),
+        slug=slug,
+    )
+
+    if not (request.user.is_staff or request.user == poll.author):
+        raise PermissionDenied
+
+    if request.POST:
+        form = forms.PollEditForm(request.POST, instance=poll)
+
+        if form.is_valid():
+            instance = form.save()
+            return redirect("polls:detail", slug=instance.slug)
+    else:
+        form = forms.PollEditForm(instance=poll)
+
+    context = {"poll": poll, "form": form}
+
+    return TemplateResponse(request, "polls/edit.html", context)
+
+
+@login_required
+def poll_delete_view(request, slug):
+    poll = get_object_or_404(
+        models.Poll.objects.all(),
+        slug=slug,
+    )
+
+    if not (request.user.is_staff or request.user == poll.author):
+        raise PermissionDenied
+
+    if request.POST:
+        form = forms.PollDeleteForm(request.POST, instance=poll)
+
+        if form.is_valid():
+            poll.delete()
+            return redirect("polls:list")
+    else:
+        form = forms.PollDeleteForm(instance=poll)
+
+    context = {"poll": poll, "form": form}
+
+    return TemplateResponse(request, "polls/delete.html", context)
