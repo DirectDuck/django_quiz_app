@@ -22,6 +22,8 @@ class Poll(models.Model):
     title = models.CharField(max_length=65)
     slug = models.SlugField(max_length=130, unique=True)
 
+    description = models.TextField(max_length=255)
+
     # If True, other users will see the poll
     published = models.BooleanField(default=False)
 
@@ -46,3 +48,17 @@ class Poll(models.Model):
 
         self.slug = slug
         super().save(*args, **kwargs)
+
+    def get_status_badge_type(self):
+        if self.status == Poll.Status.DRAFT:
+            return "secondary"
+        elif self.status == Poll.Status.WAITING_FOR_REVIEW:
+            return "info"
+        elif self.status == Poll.Status.REJECTED:
+            return "danger"
+        elif self.status == Poll.Status.APPROVED:
+            return "success"
+
+        raise NotImplementedError(
+            "Did you forgot to update get_status_badge_type method?"
+        )

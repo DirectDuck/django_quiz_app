@@ -7,6 +7,17 @@ from . import models, forms
 
 
 @login_required
+def poll_list_view(request):
+    polls = models.Poll.objects.filter(author=request.user).order_by("-created")
+
+    context = {
+        "polls": polls,
+    }
+
+    return TemplateResponse(request, "polls/list.html", context)
+
+
+@login_required
 def poll_create_view(request):
 
     if request.POST:

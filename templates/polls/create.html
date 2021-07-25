@@ -11,7 +11,7 @@
         <div class='text-center mb-3'>
             <h2 class="mb-3">Create Poll</h2>
             <p>So, you decided to create a poll? Now we're talkin'!</p>
-            <p>But first you have to come up with a title</p>
+            <p>But first you have to come up with a title and description</p>
         </div>
         <form method="post">{% csrf_token %}
             {{ form|crispy }}
