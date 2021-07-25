@@ -47,6 +47,7 @@
 
             <div class="d-flex justify-content-center mt-3">
                 <button class="btn btn-outline-primary mx-1" type="submit">Save</button>
+                <a class="btn btn-outline-danger mx-1" href="{% url 'polls:item_delete' poll.slug poll_item.index %}">Delete</a>
                 <a class="btn btn-outline-secondary mx-1" href="{% url 'polls:detail' poll.slug %}">Cancel</a>
             </div>
         </form>
