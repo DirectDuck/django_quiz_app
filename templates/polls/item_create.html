@@ -1,0 +1,47 @@
+{% extends '_base.html' %}
+
+{% load crispy_forms_tags %}
+
+
+{% block title %}Create Item | DPA{% endblock title %}
+
+{% block content %}
+<div class="row gx-5 justify-content-center">
+    <div class="col-lg-8 col-xl-6">
+        <div class='text-center mb-3'>
+            <h2 class="mb-3">Create Item for {{ poll.title }}</h2>
+        </div>
+        <form method="post">{% csrf_token %}
+            <!-- Rendering formset errors -->
+            {% if poll_item_answer_formset.non_form_errors %}
+                <div class="alert alert-block alert-danger">
+                    {% for error in poll_item_answer_formset.non_form_errors %}
+                        {{ error }}
+                    {% endfor %}
+                </div>
+            {% endif %}
+
+            <!-- Rendering PollItem form -->
+            {{ poll_item_form|crispy }}
+
+            <!-- Rendering PollItemAnswer formset -->
+            {% for form in poll_item_answer_formset %}
+                <div class="row form-container align-items-center">
+                    <div class="col-sm-10 form-group">
+                        {{ form.id }}
+                        {{ form.text|as_crispy_field }}
+                    </div>
+                    <div class="col-sm-2 form-group mt-4">
+                        {{ form.correct|as_crispy_field }}
+                    </div>
+                </div>
+            {% endfor %}
+            {{ poll_item_answer_formset.management_form }}
+
+            <div class="d-flex justify-content-center">
+                <button class="btn btn-outline-primary" type="submit">Create</button>
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock content %}

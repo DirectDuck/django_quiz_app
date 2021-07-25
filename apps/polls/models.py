@@ -94,8 +94,13 @@ class PollItemAnswer(models.Model):
     """Model representing single answer in poll's item"""
 
     poll_item = models.ForeignKey(
-        PollItem, on_delete=models.CASCADE, related_name="answers"
+        PollItem,
+        on_delete=models.CASCADE,
+        related_name="answers",
     )
 
     text = models.CharField(max_length=65)
     correct = models.BooleanField(default=False)
+
+    def __str__(self):
+        return f"{self.poll_item}'s answer"
