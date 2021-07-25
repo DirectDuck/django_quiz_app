@@ -62,3 +62,40 @@ class Poll(models.Model):
         raise NotImplementedError(
             "Did you forgot to update get_status_badge_type method?"
         )
+
+    def get_available_index(self):
+        index = 1
+
+        while self.items.filter(index=index).exists():
+            index += 1
+
+        return index
+
+
+class PollItem(models.Model):
+    """Model representing container for single question-answers item
+    in poll"""
+
+    poll = models.ForeignKey(
+        Poll,
+        on_delete=models.CASCADE,
+        related_name="items",
+    )
+
+    question = models.CharField(max_length=65)
+
+    index = models.PositiveIntegerField()
+
+    def __str__(self):
+        return f"{self.poll.title} - {self.index} item"
+
+
+class PollItemAnswer(models.Model):
+    """Model representing single answer in poll's item"""
+
+    poll_item = models.ForeignKey(
+        PollItem, on_delete=models.CASCADE, related_name="answers"
+    )
+
+    text = models.CharField(max_length=65)
+    correct = models.BooleanField(default=False)
