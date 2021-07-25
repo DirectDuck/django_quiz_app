@@ -76,6 +76,11 @@ class PollItem(models.Model):
     """Model representing container for single question-answers item
     in poll"""
 
+    MIN_ANSWERS = 2
+    MAX_ANSWERS = 6
+    MIN_CORRECT_ANSWERS = 1
+    MAX_CORRECT_ANSWERS = 1
+
     poll = models.ForeignKey(
         Poll,
         on_delete=models.CASCADE,

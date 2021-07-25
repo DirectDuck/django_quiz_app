@@ -127,7 +127,9 @@ def pollitem_create_view(request, slug):
             "correct",
         ),
         labels={"text": "Answer"},
-        extra=2,
+        extra=0,
+        min_num=models.PollItem.MIN_ANSWERS,
+        max_num=models.PollItem.MAX_ANSWERS,
     )
 
     if request.POST:

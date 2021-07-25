@@ -1,13 +1,14 @@
 {% extends '_base.html' %}
 
 {% load crispy_forms_tags %}
+{% load static %}
 
 
 {% block title %}Create Item | DPA{% endblock title %}
 
 {% block content %}
 <div class="row gx-5 justify-content-center">
-    <div class="col-lg-8 col-xl-6">
+    <div class="col-lg-8 col-xl-10">
         <div class='text-center mb-3'>
             <h2 class="mb-3">Create Item for {{ poll.title }}</h2>
         </div>
@@ -22,12 +23,16 @@
             {% endif %}
 
             <!-- Rendering PollItem form -->
-            {{ poll_item_form|crispy }}
+            <div class="row">
+                <div class="offset-sm-2 col-sm-8">
+                    {{ poll_item_form|crispy }}
+                </div>
+            </div>
 
             <!-- Rendering PollItemAnswer formset -->
             {% for form in poll_item_answer_formset %}
                 <div class="row form-container align-items-center">
-                    <div class="col-sm-10 form-group">
+                    <div class="offset-sm-2 col-sm-6 form-group">
                         {{ form.id }}
                         {{ form.text|as_crispy_field }}
                     </div>
@@ -39,9 +44,22 @@
             {{ poll_item_answer_formset.management_form }}
 
             <div class="d-flex justify-content-center">
-                <button class="btn btn-outline-primary" type="submit">Create</button>
+                <button class="btn btn-outline-primary mt-3" type="submit">Create</button>
             </div>
         </form>
     </div>
 </div>
 {% endblock content %}
+
+{% block js %}
+<script type="text/javascript" src="{% static 'dynamic_formset/jquery.formset.js' %}"></script>
+<script type="text/javascript">
+    $(".row.form-container").formset({
+        prefix: "{{ poll_item_answer_formset.prefix }}",
+        addText: "Add another",
+        addCssClass: "btn btn-outline-success offset-sm-2 col-sm-2",
+        deleteText: "Remove",
+        deleteCssClass: "btn btn-outline-danger col-sm-2",
+    });
+</script>
+{% endblock js %}
