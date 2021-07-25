@@ -1,0 +1,20 @@
+{% extends '_base.html' %}
+
+
+{% block title %}{{ poll.title }} | DPA{% endblock title %}
+
+{% block content %}
+<div class="row gx-5 justify-content-center">
+    <div class="col-lg-8 col-xl-6">
+        <div class='text-center mb-4'>
+            <div class="d-flex justify-content-center align-items-center">
+                <h2 class="mb-3">{{ poll.title }}</h2>
+                <div class="ms-2 badge bg-{{ poll.get_status_badge_type }} bg-gradient mb-2">{{ poll.get_status_display }}</div>
+            </div>
+            <p>{{ poll.description }}</p>
+            <a class="btn btn-outline-info mx-1" href="#">Edit</a>
+            <a class="btn btn-outline-danger mx-1" href="#">Delete</a>
+        </div>
+    </div>
+</div>
+{% endblock content %}

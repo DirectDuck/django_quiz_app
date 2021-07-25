@@ -1,5 +1,6 @@
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
+from django.core.exceptions import PermissionDenied
 from django.shortcuts import get_object_or_404, redirect
 from django.template.response import TemplateResponse
 
@@ -35,3 +36,20 @@ def poll_create_view(request):
     }
 
     return TemplateResponse(request, "polls/create.html", context)
+
+
+@login_required
+def poll_detail_view(request, slug):
+    poll = get_object_or_404(
+        models.Poll.objects.all(),
+        slug=slug,
+    )
+
+    if not (request.user.is_staff or request.user == poll.author):
+        raise PermissionDenied
+
+    context = {
+        "poll": poll,
+    }
+
+    return TemplateResponse(request, "polls/detail.html", context)
