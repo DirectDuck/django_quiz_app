@@ -54,19 +54,21 @@
                 </div>
             </nav>
             <!-- Messages (Adapted from django-bootstrap-v5) -->
-            {% for message in messages %}
-                {% if message.tags == 'error'%}
-                    <div class="alert alert-danger alert-dismissible fade show text-center" role="alert">
-                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="close"></button>
-                        {{ message }}
-                    </div>
-                {% else %}
-                    <div class="alert alert-{{ message.tags }} alert-dismissible fade show text-center" role="alert">
-                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="close"></button>
-                        {{ message }}
-                    </div>
-                {% endif %}
-            {% endfor %}
+            {% autoescape off %}
+                {% for message in messages %}
+                    {% if message.tags == 'error'%}
+                        <div class="alert alert-danger alert-dismissible fade show text-center" role="alert">
+                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="close"></button>
+                            {{ message }}
+                        </div>
+                    {% else %}
+                        <div class="alert alert-{{ message.tags }} alert-dismissible fade show text-center" role="alert">
+                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="close"></button>
+                            {{ message }}
+                        </div>
+                    {% endif %}
+                {% endfor %}
+            {% endautoescape %}
             <!-- Content section-->
             <section class="py-5">
                 <div class="container px-5 my-5">

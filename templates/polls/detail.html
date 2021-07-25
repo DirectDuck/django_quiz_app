@@ -12,12 +12,24 @@
                 <div class="ms-2 badge bg-{{ poll.get_status_badge_type }} bg-gradient mb-2">{{ poll.get_status_display }}</div>
             </div>
             <p>{{ poll.description }}</p>
+            {% if poll.status == poll.Status.DRAFT %}
+                <a class="btn btn-outline-success mx-1" href="#">Submit</a>
+            {% endif %}
             <a class="btn btn-outline-info mx-1" href="{% url 'polls:edit' poll.slug %}">Edit</a>
             <a class="btn btn-outline-danger mx-1" href="{% url 'polls:delete' poll.slug %}">Delete</a>
         </div>
     </div>
 </div>
-<div>
-    <a class="btn btn-outline-success" href="{% url 'polls:item_create' poll.slug %}">Add Item</a>
+<div class="col-xl-6 offset-xl-3">
+    <div class="list-group text-center">
+        {% for poll_item in poll.items.all %}
+            <a href="#" class="list-group-item list-group-item-action mb-2 shadow-sm">
+                {{ poll_item.question }}
+            </a>
+        {% endfor %}
+    </div>
+    <div class="d-flex justify-content-center mt-2">
+        <a class="btn btn-outline-success" href="{% url 'polls:item_create' poll.slug %}">Add Item</a>
+    </div>
 </div>
 {% endblock content %}

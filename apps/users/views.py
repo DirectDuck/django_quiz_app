@@ -3,7 +3,6 @@ from django.contrib.auth.decorators import login_required
 from django.shortcuts import get_object_or_404, redirect
 from django.template.response import TemplateResponse
 from django.urls import reverse
-from django.utils.safestring import mark_safe
 
 from allauth.account.admin import EmailAddress
 
@@ -18,11 +17,9 @@ def user_profile_view(request):
         messages.add_message(
             request,
             messages.WARNING,
-            mark_safe(
-                "Your e-mail is not verified. "
-                f'<a href={reverse("users:resend_verification_email")}>'
-                "Resend verification e-mail.</a>"
-            ),
+            "Your e-mail is not verified. "
+            f'<a href={reverse("users:resend_verification_email")}>'
+            "Resend verification e-mail.</a>",
         )
 
     context = {}
