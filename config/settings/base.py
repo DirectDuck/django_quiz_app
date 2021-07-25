@@ -124,6 +124,7 @@ DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
 AUTH_USER_MODEL = "users.User"
 
+
 # Authentication
 
 AUTHENTICATION_BACKENDS = [
@@ -133,6 +134,7 @@ AUTHENTICATION_BACKENDS = [
 
 LOGIN_REDIRECT_URL = "pages:home"
 LOGIN_URL = "account_login"
+
 
 # Site
 
