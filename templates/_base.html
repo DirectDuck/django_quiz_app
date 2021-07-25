@@ -35,7 +35,7 @@
                                 <a class="nav-link dropdown-toggle" id="navbarDropdownBlog" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">Polls</a>
                                 <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdownBlog">
                                     <li><a class="dropdown-item" href="#">List</a></li>
-                                    <li><a class="dropdown-item" href="#">Create</a></li>
+                                    <li><a class="dropdown-item" href="{% url 'polls:create' %}">Create</a></li>
                                 </ul>
                             </li>
                             {% if request.user.is_authenticated %}

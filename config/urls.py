@@ -26,6 +26,7 @@ urlpatterns = disabled_urls + [
     # Local
     path("", include("apps.pages.urls", namespace="pages")),
     path("", include("apps.users.urls", namespace="users")),
+    path("polls/", include("apps.polls.urls", namespace="polls")),
 ]
 
 if settings.DEBUG:
