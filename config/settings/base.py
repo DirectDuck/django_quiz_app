@@ -39,6 +39,7 @@ INSTALLED_APPS = [
     "apps.core",
     "apps.users",
     "apps.pages",
+    "apps.polls",
 ]
 
 MIDDLEWARE = [
