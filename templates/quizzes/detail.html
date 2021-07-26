@@ -7,27 +7,28 @@
 <div class="row gx-5 justify-content-center">
     <div class="col-lg-8 col-xl-6">
         <div class='text-center mb-4'>
-            <div class="d-flex justify-content-center align-items-center">
+            <div class="d-flex justify-content-center align-items-center flex-wrap">
+                <div class="d-inline badge d-inline me-2"></div>
                 <h2 class="mb-3">{{ quiz.title }}</h2>
                 <div class="ms-2 badge bg-{{ quiz.get_status_badge_type }} bg-gradient mb-2">{{ quiz.get_status_display }}</div>
             </div>
             <p>{{ quiz.description }}</p>
             <div>
-                {% if quiz.status == quiz.Status.DRAFT or quiz.status == quiz.Status.REJECTED %}
-                    <a class="btn btn-outline-success m-1" href="#">Submit</a>
+                <a class="btn btn-outline-danger m-1" href="{% url 'quizzes:delete' quiz.slug %}">Delete</a>
+                <a class="btn btn-outline-info m-1" href="#">Try it</a>
+                {% if quiz.status == quiz.Status.REVIEW %}
+                    <a class="btn btn-outline-info m-1" href="#">Cancel Review</a>
+                {% elif quiz.status == quiz.Status.DRAFT or quiz.status == quiz.Status.REJECTED %}
                     <a class="btn btn-outline-info m-1" href="{% url 'quizzes:edit' quiz.slug %}">Edit</a>
                     <a class="btn btn-outline-info m-1" href="#">Results</a>
-                {% elif quiz.status == quiz.Status.WAITING_FOR_REVIEW %}
-                    <a class="btn btn-outline-info m-1" href="#">Cancel Review</a>
+                    <a class="btn btn-outline-success m-1" href="#">Submit</a>
                 {% endif %}
-                <a class="btn btn-outline-info m-1" href="#">Try it</a>
-                <a class="btn btn-outline-danger m-1" href="{% url 'quizzes:delete' quiz.slug %}">Delete</a>
             </div>
-            {% if quiz.status == quiz.Status.REJECTED %}
+           <!--  {% if quiz.status == quiz.Status.REJECTED %}
             <div class="mt-1">
                 <a class="btn btn-outline-danger mx-1" href="#">Rejected Message</a>
             </div>
-            {% endif %}
+            {% endif %} -->
         </div>
     </div>
 </div>

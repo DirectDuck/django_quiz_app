@@ -11,7 +11,7 @@ class Quiz(models.Model):
 
     class Status(models.IntegerChoices):
         DRAFT = 1  # When initially created
-        WAITING_FOR_REVIEW = 2  # When author finishes quiz creation
+        REVIEW = 2  # When author finishes quiz creation and staff reviews the work
         REJECTED = 3  # If admin/editor reject quiz (comes with RejectedQuizMessage)
         APPROVED = 4  # If admin/editor approves quiz (approved quiz will be published)
 
@@ -58,7 +58,7 @@ class Quiz(models.Model):
 
         if self.status == Quiz.Status.DRAFT:
             return "secondary"
-        elif self.status == Quiz.Status.WAITING_FOR_REVIEW:
+        elif self.status == Quiz.Status.REVIEW:
             return "info"
         elif self.status == Quiz.Status.REJECTED:
             return "danger"
