@@ -73,3 +73,11 @@ class QuizItemAnswerFormSet(BaseInlineFormSet):
                 f"You must have a minimum of {models.QuizItem.MIN_CORRECT_ANSWERS}"
                 " correct answers"
             )
+
+        # Validating that every answer is unique
+        answers = []
+        for form in forms:
+            if form.cleaned_data["text"] in answers:
+                raise ValidationError("Every answer must be unique")
+            else:
+                answers.append(form.cleaned_data["text"])
