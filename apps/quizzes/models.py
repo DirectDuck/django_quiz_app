@@ -108,10 +108,6 @@ class QuizItem(models.Model):
 
     class Meta:
         constraints = [
-            # All questions in quiz must be unique
-            models.UniqueConstraint(
-                fields=["quiz", "question"], name="unique_quiz_questions"
-            ),
             # Every item must have it's own unique index
             models.UniqueConstraint(fields=["quiz", "index"], name="unique_quiz_index"),
         ]
@@ -131,15 +127,6 @@ class QuizItemAnswer(models.Model):
 
     text = models.CharField(max_length=65)
     correct = models.BooleanField(default=False)
-
-    class Meta:
-        # How can you guess the correct answer if there
-        # is multiple identical answers?
-        constraints = [
-            models.UniqueConstraint(
-                fields=["quiz_item", "text"], name="unique_quizitem_text"
-            ),
-        ]
 
     def __str__(self):
         return f"{self.quiz_item}'s answer"

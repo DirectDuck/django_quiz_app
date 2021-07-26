@@ -28,6 +28,22 @@ class QuizItemForm(forms.ModelForm):
         model = models.QuizItem
         fields = ("question",)
 
+    def __init__(self, *args, **kwargs):
+
+        if "quiz" in kwargs:
+            self._quiz = kwargs.pop("quiz")
+
+        super().__init__(*args, **kwargs)
+
+    def clean_question(self):
+        question = self.cleaned_data["question"]
+
+        # Making sure that each quiz question is unique
+        if self._quiz.items.filter(question=question).exists():
+            raise ValidationError("Item with that question already exists")
+
+        return question
+
 
 class QuizItemDeleteForm(forms.ModelForm):
     class Meta:

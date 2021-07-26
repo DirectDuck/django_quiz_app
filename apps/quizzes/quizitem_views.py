@@ -41,12 +41,14 @@ def quizitem_create_view(request, slug):
         # We actually need to put POST in formset here
         # in case QuizItem form validation fails,
         # otherwise we would have lost formset data
-        quiz_item_form = forms.QuizItemForm(request.POST)
+        quiz_item_form = forms.QuizItemForm(request.POST, quiz=quiz)
         quiz_item_answer_formset = QuizItemAnswerFormset(
             request.POST, instance=quiz_item
         )
+        print("THERE")
 
         if quiz_item_form.is_valid():
+            print("THERE")
             # Saving QuizItem and assigning some data
             quiz_item = quiz_item_form.save(commit=False)
             quiz_item.index = quiz.get_available_item_index()
@@ -66,7 +68,7 @@ def quizitem_create_view(request, slug):
                 return redirect("quizzes:detail", slug=quiz.slug)
     else:
         # Initializing basically empty form and formset
-        quiz_item_form = forms.QuizItemForm()
+        quiz_item_form = forms.QuizItemForm(quiz=quiz)
         quiz_item_answer_formset = QuizItemAnswerFormset(instance=quiz_item)
 
     context = {
@@ -114,7 +116,7 @@ def quizitem_edit_view(request, slug, index):
 
     if request.POST:
         # Loading form and formset with POST data
-        quiz_item_form = forms.QuizItemForm(request.POST, instance=quiz_item)
+        quiz_item_form = forms.QuizItemForm(request.POST, instance=quiz_item, quiz=quiz)
         quiz_item_answer_formset = QuizItemAnswerFormset(
             request.POST, instance=quiz_item
         )
@@ -129,7 +131,7 @@ def quizitem_edit_view(request, slug, index):
                 return redirect("quizzes:detail", slug=quiz.slug)
     else:
         # Initializing form and formset with instances
-        quiz_item_form = forms.QuizItemForm(instance=quiz_item)
+        quiz_item_form = forms.QuizItemForm(instance=quiz_item, quiz=quiz)
         quiz_item_answer_formset = QuizItemAnswerFormset(instance=quiz_item)
 
     context = {
