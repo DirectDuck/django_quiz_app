@@ -50,6 +50,9 @@ class Quiz(models.Model):
         super().save(*args, **kwargs)
 
     def get_status_badge_type(self):
+        """Get bootstrap color representation based on
+        quiz status"""
+
         if self.status == Quiz.Status.DRAFT:
             return "secondary"
         elif self.status == Quiz.Status.WAITING_FOR_REVIEW:
@@ -64,6 +67,8 @@ class Quiz(models.Model):
         )
 
     def get_available_item_index(self):
+        """Get free index based on quiz items presented"""
+
         index = 1
 
         while self.items.filter(index=index).exists():
@@ -72,6 +77,8 @@ class Quiz(models.Model):
         return index
 
     def update_items_indexes(self):
+        """Update quiz items indexes in case there might
+        be any inconsistency"""
         index = 1
         for item in self.items.order_by("index"):
             item.index = index
@@ -97,6 +104,16 @@ class QuizItem(models.Model):
 
     index = models.PositiveIntegerField()
 
+    class Meta:
+        constraints = [
+            # All questions in quiz must be unique
+            models.UniqueConstraint(
+                fields=["quiz", "question"], name="unique_quiz_questions"
+            ),
+            # Every item must have it's own unique index
+            models.UniqueConstraint(fields=["quiz", "index"], name="unique_quiz_index"),
+        ]
+
     def __str__(self):
         return f"{self.quiz.title} - {self.index} item"
 
@@ -113,5 +130,39 @@ class QuizItemAnswer(models.Model):
     text = models.CharField(max_length=65)
     correct = models.BooleanField(default=False)
 
+    class Meta:
+        # How can you guess the correct answer if there
+        # is multiple identical answers?
+        constraints = [
+            models.UniqueConstraint(
+                fields=["quiz_item", "text"], name="unique_quizitem_text"
+            ),
+        ]
+
     def __str__(self):
         return f"{self.quiz_item}'s answer"
+
+
+class QuizResult:
+    """Model representing different results of particular quiz,
+    based on the number of correct answers by user"""
+
+    quiz = models.ForeignKey(
+        Quiz,
+        on_delete=models.CASCADE,
+        related_name="results",
+    )
+
+    score = models.PositiveIntegerField()
+
+    text = models.CharField(
+        max_length=65,
+        # Because QuizResult will be initialized automatically
+        blank=True,
+    )
+
+    class Meta:
+        # There can't be two different result messages for one score
+        constraints = [
+            models.UniqueConstraint(fields=["quiz", "score"], name="unique_quiz_score"),
+        ]
