@@ -79,7 +79,9 @@ class Quiz(models.Model):
     def update_items_indexes(self):
         """Update quiz items indexes in case there might
         be any inconsistency"""
+
         index = 1
+
         for item in self.items.order_by("index"):
             item.index = index
             item.save()
