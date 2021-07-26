@@ -20,10 +20,11 @@
                 {% elif quiz.status == quiz.Status.WAITING_FOR_REVIEW %}
                     <a class="btn btn-outline-info m-1" href="#">Cancel Review</a>
                 {% endif %}
+                <a class="btn btn-outline-info m-1" href="#">Try it</a>
                 <a class="btn btn-outline-danger m-1" href="{% url 'quizzes:delete' quiz.slug %}">Delete</a>
             </div>
             {% if quiz.status == quiz.Status.REJECTED %}
-            <div class="mt-2">
+            <div class="mt-1">
                 <a class="btn btn-outline-danger mx-1" href="#">Rejected Message</a>
             </div>
             {% endif %}
