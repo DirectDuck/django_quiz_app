@@ -6,7 +6,7 @@
     <head>
         <meta charset="utf-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
-        <title>{% block title %}Django Polls Advanced{% endblock title %}</title>
+        <title>{% block title %}Django Quiz App{% endblock title %}</title>
         <!-- Favicon-->
         <link rel="icon" type="image/x-icon" href="assets/favicon.ico" />
         <!-- Bootstrap icons-->
@@ -23,7 +23,7 @@
             <!-- Navigation-->
             <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
                 <div class="container px-5">
-                    <a class="navbar-brand" href="{% url 'pages:home' %}">Django Polls Advanced</a>
+                    <a class="navbar-brand" href="{% url 'pages:home' %}">Django Quiz App</a>
                     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation"><span class="navbar-toggler-icon"></span></button>
                     <div class="collapse navbar-collapse" id="navbarSupportedContent">
                         <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
@@ -32,10 +32,10 @@
                             <li class="nav-item mx-1"><a class="nav-link" href="#">Results</a></li>
                             <li class="nav-item mx-1"><a class="nav-link" href="#">Review</a></li>
                             <li class="nav-item dropdown mx-1">
-                                <a class="nav-link dropdown-toggle" id="navbarDropdownBlog" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">Polls</a>
+                                <a class="nav-link dropdown-toggle" id="navbarDropdownBlog" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">Quizzes</a>
                                 <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdownBlog">
-                                    <li><a class="dropdown-item" href="{% url 'polls:list' %}">List</a></li>
-                                    <li><a class="dropdown-item" href="{% url 'polls:create' %}">Create</a></li>
+                                    <li><a class="dropdown-item" href="{% url 'quizzes:list' %}">List</a></li>
+                                    <li><a class="dropdown-item" href="{% url 'quizzes:create' %}">Create</a></li>
                                 </ul>
                             </li>
                             {% if request.user.is_authenticated %}

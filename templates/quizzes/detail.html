@@ -1,0 +1,35 @@
+{% extends '_base.html' %}
+
+
+{% block title %}{{ quiz.title }} | DQA{% endblock title %}
+
+{% block content %}
+<div class="row gx-5 justify-content-center">
+    <div class="col-lg-8 col-xl-6">
+        <div class='text-center mb-4'>
+            <div class="d-flex justify-content-center align-items-center">
+                <h2 class="mb-3">{{ quiz.title }}</h2>
+                <div class="ms-2 badge bg-{{ quiz.get_status_badge_type }} bg-gradient mb-2">{{ quiz.get_status_display }}</div>
+            </div>
+            <p>{{ quiz.description }}</p>
+            {% if quiz.status == quiz.Status.DRAFT %}
+                <a class="btn btn-outline-success mx-1" href="#">Submit</a>
+            {% endif %}
+            <a class="btn btn-outline-info mx-1" href="{% url 'quizzes:edit' quiz.slug %}">Edit</a>
+            <a class="btn btn-outline-danger mx-1" href="{% url 'quizzes:delete' quiz.slug %}">Delete</a>
+        </div>
+    </div>
+</div>
+<div class="col-xl-6 offset-xl-3">
+    <div class="list-group text-center">
+        {% for quiz_item in quiz_items %}
+            <a href="{% url 'quizzes:item_edit' quiz.slug quiz_item.index %}" class="list-group-item list-group-item-action mb-2 shadow-sm">
+                {{ quiz_item.question }}
+            </a>
+        {% endfor %}
+    </div>
+    <div class="d-flex justify-content-center mt-2">
+        <a class="btn btn-outline-success" href="{% url 'quizzes:item_create' quiz.slug %}">Add Item</a>
+    </div>
+</div>
+{% endblock content %}

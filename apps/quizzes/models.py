@@ -6,17 +6,17 @@ from django.template.defaultfilters import slugify
 from django.utils.crypto import get_random_string
 
 
-class Poll(models.Model):
-    """Model representing polls"""
+class Quiz(models.Model):
+    """Model representing quizzes"""
 
     class Status(models.IntegerChoices):
         DRAFT = 1  # When initially created
-        WAITING_FOR_REVIEW = 2  # When author finishes poll creation
-        REJECTED = 3  # If admin/editor reject poll (comes with RejectedPollMessage)
-        APPROVED = 4  # If admin/editor approves poll (approved poll will be published)
+        WAITING_FOR_REVIEW = 2  # When author finishes quiz creation
+        REJECTED = 3  # If admin/editor reject quiz (comes with RejectedQuizMessage)
+        APPROVED = 4  # If admin/editor approves quiz (approved quiz will be published)
 
     author = models.ForeignKey(
-        settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name="polls"
+        settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name="quizzes"
     )
 
     title = models.CharField(max_length=65)
@@ -24,7 +24,7 @@ class Poll(models.Model):
 
     description = models.TextField(max_length=255)
 
-    # If True, other users will see the poll
+    # If True, other users will see the quiz
     published = models.BooleanField(default=False)
 
     status = models.IntegerField(
@@ -43,20 +43,20 @@ class Poll(models.Model):
         slugified_title = slugify(unidecode(self.title))
         slug = get_random_string(length=4) + "-" + slugified_title
 
-        while Poll.objects.filter(slug=slug).exists():
+        while Quiz.objects.filter(slug=slug).exists():
             slug = get_random_string(length=4) + "-" + slugified_title
 
         self.slug = slug
         super().save(*args, **kwargs)
 
     def get_status_badge_type(self):
-        if self.status == Poll.Status.DRAFT:
+        if self.status == Quiz.Status.DRAFT:
             return "secondary"
-        elif self.status == Poll.Status.WAITING_FOR_REVIEW:
+        elif self.status == Quiz.Status.WAITING_FOR_REVIEW:
             return "info"
-        elif self.status == Poll.Status.REJECTED:
+        elif self.status == Quiz.Status.REJECTED:
             return "danger"
-        elif self.status == Poll.Status.APPROVED:
+        elif self.status == Quiz.Status.APPROVED:
             return "success"
 
         raise NotImplementedError(
@@ -72,17 +72,17 @@ class Poll(models.Model):
         return index
 
 
-class PollItem(models.Model):
+class QuizItem(models.Model):
     """Model representing container for single question-answers item
-    in poll"""
+    in quiz"""
 
     MIN_ANSWERS = 2
     MAX_ANSWERS = 6
     MIN_CORRECT_ANSWERS = 1
     MAX_CORRECT_ANSWERS = 1
 
-    poll = models.ForeignKey(
-        Poll,
+    quiz = models.ForeignKey(
+        Quiz,
         on_delete=models.CASCADE,
         related_name="items",
     )
@@ -92,14 +92,14 @@ class PollItem(models.Model):
     index = models.PositiveIntegerField()
 
     def __str__(self):
-        return f"{self.poll.title} - {self.index} item"
+        return f"{self.quiz.title} - {self.index} item"
 
 
-class PollItemAnswer(models.Model):
-    """Model representing single answer in poll's item"""
+class QuizItemAnswer(models.Model):
+    """Model representing single answer in quizzes item"""
 
-    poll_item = models.ForeignKey(
-        PollItem,
+    quiz_item = models.ForeignKey(
+        QuizItem,
         on_delete=models.CASCADE,
         related_name="answers",
     )
@@ -108,4 +108,4 @@ class PollItemAnswer(models.Model):
     correct = models.BooleanField(default=False)
 
     def __str__(self):
-        return f"{self.poll_item}'s answer"
+        return f"{self.quiz_item}'s answer"

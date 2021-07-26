@@ -6,36 +6,36 @@ from . import models
 
 
 # I intentionally merged Create and Edit forms
-# for Poll and PollItem, because they are basically
+# for Quiz and QuizItem, because they are basically
 # the same. However, when they will begin to differ
 # in the slightest - I'll separate them
 
 
-class PollForm(forms.ModelForm):
+class QuizForm(forms.ModelForm):
     class Meta:
-        model = models.Poll
+        model = models.Quiz
         fields = ("title", "description")
 
 
-class PollDeleteForm(forms.ModelForm):
+class QuizDeleteForm(forms.ModelForm):
     class Meta:
-        model = models.Poll
+        model = models.Quiz
         fields = tuple()
 
 
-class PollItemForm(forms.ModelForm):
+class QuizItemForm(forms.ModelForm):
     class Meta:
-        model = models.PollItem
+        model = models.QuizItem
         fields = ("question",)
 
 
-class PollItemDeleteForm(forms.ModelForm):
+class QuizItemDeleteForm(forms.ModelForm):
     class Meta:
-        model = models.PollItem
+        model = models.QuizItem
         fields = tuple()
 
 
-class PollItemAnswerFormSet(BaseInlineFormSet):
+class QuizItemAnswerFormSet(BaseInlineFormSet):
     def clean(self):
         super().clean()
 
@@ -50,10 +50,10 @@ class PollItemAnswerFormSet(BaseInlineFormSet):
             forms.append(form)
 
         # Validating number of answers
-        if len(forms) < models.PollItem.MIN_ANSWERS:
+        if len(forms) < models.QuizItem.MIN_ANSWERS:
             raise ValidationError("Minimum of 2 answers is required")
 
-        if len(forms) > models.PollItem.MAX_ANSWERS:
+        if len(forms) > models.QuizItem.MAX_ANSWERS:
             raise ValidationError("Maximum of 6 answers is allowed")
 
         # Validating number of correct answers
@@ -62,14 +62,14 @@ class PollItemAnswerFormSet(BaseInlineFormSet):
             if form.cleaned_data["correct"]:
                 corrects += 1
 
-        if corrects > models.PollItem.MAX_CORRECT_ANSWERS:
+        if corrects > models.QuizItem.MAX_CORRECT_ANSWERS:
             raise ValidationError(
-                f"You must have a maximum of {models.PollItem.MAX_CORRECT_ANSWERS}"
+                f"You must have a maximum of {models.QuizItem.MAX_CORRECT_ANSWERS}"
                 " correct answers"
             )
 
-        if corrects < models.PollItem.MIN_CORRECT_ANSWERS:
+        if corrects < models.QuizItem.MIN_CORRECT_ANSWERS:
             raise ValidationError(
-                f"You must have a minimum of {models.PollItem.MIN_CORRECT_ANSWERS}"
+                f"You must have a minimum of {models.QuizItem.MIN_CORRECT_ANSWERS}"
                 " correct answers"
             )

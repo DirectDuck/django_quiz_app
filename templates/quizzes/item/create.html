@@ -4,19 +4,19 @@
 {% load static %}
 
 
-{% block title %}Edit Item | DPA{% endblock title %}
+{% block title %}Create Item | DQA{% endblock title %}
 
 {% block content %}
 <div class="row gx-5 justify-content-center">
     <div class="col-lg-8 col-xl-10">
         <div class='text-center mb-3'>
-            <h2 class="mb-3">Edit Item {{ poll_item.index }} from {{ poll.title }}</h2>
+            <h2 class="mb-3">Create Item for {{ quiz.title }}</h2>
         </div>
         <form method="post">{% csrf_token %}
             <!-- Rendering formset errors -->
-            {% if poll_item_answer_formset.non_form_errors %}
+            {% if quiz_item_answer_formset.non_form_errors %}
                 <div class="alert alert-block alert-danger offset-sm-2 col-sm-8">
-                    {% for error in poll_item_answer_formset.non_form_errors %}
+                    {% for error in quiz_item_answer_formset.non_form_errors %}
                         {{ error }}
                     {% endfor %}
                 </div>
@@ -25,16 +25,14 @@
             <!-- Rendering PollItem form -->
             <div class="row">
                 <div class="offset-sm-2 col-sm-8">
-                    {{ poll_item_form|crispy }}
+                    {{ quiz_item_form|crispy }}
                 </div>
             </div>
 
             <!-- Rendering PollItemAnswer formset -->
-            {% for form in poll_item_answer_formset %}
+            {% for form in quiz_item_answer_formset %}
                 <div class="row form-container align-items-center">
                     <div class="offset-sm-2 col-sm-6 form-group">
-                        <!-- Adding DELETE field only if this answer is already in database-->
-                        {% if form.instance.pk %}{{ form.DELETE }}{% endif %}
                         {{ form.id }}
                         {{ form.text|as_crispy_field }}
                     </div>
@@ -43,12 +41,10 @@
                     </div>
                 </div>
             {% endfor %}
-            {{ poll_item_answer_formset.management_form }}
+            {{ quiz_item_answer_formset.management_form }}
 
-            <div class="d-flex justify-content-center mt-3">
-                <button class="btn btn-outline-primary mx-1" type="submit">Save</button>
-                <a class="btn btn-outline-danger mx-1" href="{% url 'polls:item_delete' poll.slug poll_item.index %}">Delete</a>
-                <a class="btn btn-outline-secondary mx-1" href="{% url 'polls:detail' poll.slug %}">Cancel</a>
+            <div class="d-flex justify-content-center">
+                <button class="btn btn-outline-primary mt-3" type="submit">Create</button>
             </div>
         </form>
     </div>
@@ -59,7 +55,7 @@
 <script type="text/javascript" src="{% static 'dynamic_formset/jquery.formset.js' %}"></script>
 <script type="text/javascript">
     $(".row.form-container").formset({
-        prefix: "{{ poll_item_answer_formset.prefix }}",
+        prefix: "{{ quiz_item_answer_formset.prefix }}",
         addText: "Add another",
         addCssClass: "btn btn-outline-success offset-sm-2 col-sm-2",
         deleteText: "Remove",

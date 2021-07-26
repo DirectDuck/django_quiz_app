@@ -13,7 +13,9 @@ from .models import User
 def user_profile_view(request):
     email_verified = EmailAddress.objects.get(user=request.user).verified
 
-    if not email_verified:
+    # Added second condition here, so if user actually resends
+    # his verification e-mail, only one message will appear
+    if not email_verified and len(messages.get_messages(request)) == 0:
         messages.add_message(
             request,
             messages.WARNING,

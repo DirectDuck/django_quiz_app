@@ -1,0 +1,29 @@
+{% extends '_base.html' %}
+
+
+{% block title %}Quizes List | DQA{% endblock title %}
+
+{% block content %}
+<div class="row gx-5 justify-content-center">
+    <div class="col-lg-8 col-xl-6">
+        <div class='text-center mb-4'>
+            <h2 class="mb-3">Quizzes List</h2>
+            <p>Here's what you have created so far</p>
+            <a class="btn btn-outline-success" href="{% url 'quizzes:create' %}">Create</a>
+        </div>
+    </div>
+</div>
+<div class="row gx-5">
+    {% for quiz in quizzes %}
+    <div class="col-lg-4 mb-5">
+        <div class="card h-100 shadow border-0">
+            <div class="card-body p-4">
+                <div class="badge bg-{{ quiz.get_status_badge_type }} bg-gradient mb-2">{{ quiz.get_status_display }}</div>
+                <a class="text-decoration-none link-dark stretched-link" href="{% url 'quizzes:detail' quiz.slug %}"><h5 class="card-title mb-3">{{ quiz.title }}</h5></a>
+                <p class="card-text mb-0">{{ quiz.description }}</p>
+            </div>
+        </div>
+    </div>
+    {% endfor %}
+</div>
+{% endblock content %}
