@@ -1,6 +1,9 @@
 from django.urls import path
 
 from . import quiz_views, quizitem_views
+from .views import (
+    quiz_result,
+)
 
 
 app_name = "quizzes"
@@ -29,5 +32,11 @@ urlpatterns = [
         "<slug:slug>/item/<int:index>/delete/",
         quizitem_views.quizitem_delete_view,
         name="item_delete",
+    ),
+    # QuizResult views
+    path(
+        "<slug:slug>/results/",
+        quiz_result.edit_view,
+        name="results_edit",
     ),
 ]

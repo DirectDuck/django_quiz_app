@@ -20,7 +20,7 @@
                     <a class="btn btn-outline-info m-1" href="#">Cancel Review</a>
                 {% elif quiz.status == quiz.Status.DRAFT or quiz.status == quiz.Status.REJECTED %}
                     <a class="btn btn-outline-info m-1" href="{% url 'quizzes:edit' quiz.slug %}">Edit</a>
-                    <a class="btn btn-outline-info m-1" href="#">Results</a>
+                    <a class="btn btn-outline-info m-1" href="{% url 'quizzes:results_edit' quiz.slug %}">Results</a>
                     <a class="btn btn-outline-success m-1" href="#">Submit</a>
                 {% endif %}
             </div>

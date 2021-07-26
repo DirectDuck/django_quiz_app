@@ -89,6 +89,21 @@ class Quiz(models.Model):
             item.index = index
             item.save()
 
+    def update_results(self):
+        """Create/update/delete related QuizResult objects
+        to match the number of items"""
+
+        items_count = self.items.count()
+
+        for i in range(items_count + 1):
+            self.results.get_or_create(
+                quiz=self,
+                score=i,
+            )
+
+        for result in self.results.filter(score__gt=items_count):
+            result.delete()
+
 
 class QuizItem(models.Model):
     """Model representing container for single question-answers item
@@ -135,7 +150,7 @@ class QuizItemAnswer(models.Model):
         return f"{self.quiz_item}'s answer"
 
 
-class QuizResult:
+class QuizResult(models.Model):
     """Model representing different results of particular quiz,
     based on the number of correct answers by user"""
 
