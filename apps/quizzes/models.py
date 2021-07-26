@@ -89,20 +89,26 @@ class Quiz(models.Model):
             item.index = index
             item.save()
 
-    def update_results(self):
+    def update_results(self) -> None:
         """Create/update/delete related QuizResult objects
         to match the number of items"""
 
+        # If everything is up to date, then number of items
+        # should be 1 less than number of results (because they include
+        # zero)
+
         items_count = self.items.count()
+        results_count = self.results.count()
 
-        for i in range(items_count + 1):
-            self.results.get_or_create(
-                quiz=self,
-                score=i,
-            )
-
-        for result in self.results.filter(score__gt=items_count):
-            result.delete()
+        if items_count + 1 > results_count:
+            for i in range(results_count, items_count + 1):
+                self.results.get_or_create(
+                    quiz=self,
+                    score=i,
+                )
+        elif items_count + 1 < results_count:
+            for result in self.results.filter(score__gt=items_count):
+                result.delete()
 
 
 class QuizItem(models.Model):
