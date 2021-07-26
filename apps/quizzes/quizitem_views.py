@@ -49,7 +49,7 @@ def quizitem_create_view(request, slug):
         if quiz_item_form.is_valid():
             # Saving QuizItem and assigning some data
             quiz_item = quiz_item_form.save(commit=False)
-            quiz_item.index = quiz.get_available_index()
+            quiz_item.index = quiz.get_available_item_index()
             quiz_item.quiz = quiz
 
             # Reinitializing QuizItemAnswer formset so it
@@ -163,6 +163,7 @@ def quizitem_delete_view(request, slug, index):
 
         if form.is_valid():
             quiz_item.delete()
+            quiz.update_items_indexes()
             return redirect("quizzes:detail", slug=quiz.slug)
     else:
         form = forms.QuizItemDeleteForm(instance=quiz_item)

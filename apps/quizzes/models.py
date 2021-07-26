@@ -63,13 +63,19 @@ class Quiz(models.Model):
             "Did you forgot to update get_status_badge_type method?"
         )
 
-    def get_available_index(self):
+    def get_available_item_index(self):
         index = 1
 
         while self.items.filter(index=index).exists():
             index += 1
 
         return index
+
+    def update_items_indexes(self):
+        index = 1
+        for item in self.items.order_by("index"):
+            item.index = index
+            item.save()
 
 
 class QuizItem(models.Model):
