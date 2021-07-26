@@ -9,7 +9,7 @@
         <div class='text-center mb-4'>
             <h2 class="mb-3">Quizzes List</h2>
             <p>Here's what you have created so far</p>
-            <a class="btn btn-outline-success" href="{% url 'quizzes:create' %}">Create</a>
+            <a class="btn btn-outline-success mt-2" href="{% url 'quizzes:create' %}">Create</a>
         </div>
     </div>
 </div>
@@ -24,6 +24,8 @@
             </div>
         </div>
     </div>
+    {% empty %}
+    <p class="text-center">Nothing here just yet...</p>
     {% endfor %}
 </div>
 {% endblock content %}
