@@ -4,11 +4,11 @@ from django.forms import inlineformset_factory
 from django.shortcuts import get_object_or_404, redirect
 from django.template.response import TemplateResponse
 
-from . import models, forms
+from apps.quizzes import models, forms
 
 
 @login_required
-def quizitem_create_view(request, slug):
+def create_view(request, slug):
     quiz = get_object_or_404(
         models.Quiz.objects.all(),
         slug=slug,
@@ -45,10 +45,8 @@ def quizitem_create_view(request, slug):
         quiz_item_answer_formset = QuizItemAnswerFormset(
             request.POST, instance=quiz_item
         )
-        print("THERE")
 
         if quiz_item_form.is_valid():
-            print("THERE")
             # Saving QuizItem and assigning some data
             quiz_item = quiz_item_form.save(commit=False)
             quiz_item.index = quiz.get_available_item_index()
@@ -81,7 +79,7 @@ def quizitem_create_view(request, slug):
 
 
 @login_required
-def quizitem_edit_view(request, slug, index):
+def edit_view(request, slug, index):
     quiz = get_object_or_404(
         models.Quiz.objects.all(),
         slug=slug,
@@ -145,7 +143,7 @@ def quizitem_edit_view(request, slug, index):
 
 
 @login_required
-def quizitem_delete_view(request, slug, index):
+def delete_view(request, slug, index):
     quiz = get_object_or_404(
         models.Quiz.objects.all(),
         slug=slug,

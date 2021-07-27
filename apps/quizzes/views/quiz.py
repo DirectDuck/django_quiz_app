@@ -3,11 +3,11 @@ from django.core.exceptions import PermissionDenied
 from django.shortcuts import get_object_or_404, redirect
 from django.template.response import TemplateResponse
 
-from . import models, forms
+from apps.quizzes import models, forms
 
 
 @login_required
-def quiz_list_view(request):
+def list_view(request):
     quizzes = models.Quiz.objects.filter(author=request.user).order_by("-created")
 
     context = {
@@ -18,7 +18,7 @@ def quiz_list_view(request):
 
 
 @login_required
-def quiz_create_view(request):
+def create_view(request):
 
     if request.POST:
         form = forms.QuizForm(request.POST)
@@ -38,7 +38,7 @@ def quiz_create_view(request):
 
 
 @login_required
-def quiz_detail_view(request, slug):
+def detail_view(request, slug):
     quiz = get_object_or_404(
         models.Quiz.objects.all(),
         slug=slug,
@@ -58,7 +58,7 @@ def quiz_detail_view(request, slug):
 
 
 @login_required
-def quiz_edit_view(request, slug):
+def edit_view(request, slug):
     quiz = get_object_or_404(
         models.Quiz.objects.all(),
         slug=slug,
@@ -82,7 +82,7 @@ def quiz_edit_view(request, slug):
 
 
 @login_required
-def quiz_delete_view(request, slug):
+def delete_view(request, slug):
     quiz = get_object_or_404(
         models.Quiz.objects.all(),
         slug=slug,
