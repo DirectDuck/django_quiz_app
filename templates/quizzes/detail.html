@@ -15,7 +15,7 @@
             <p>{{ quiz.description }}</p>
             <div>
                 <a class="btn btn-outline-danger m-1" href="{% url 'quizzes:delete' quiz.slug %}">Delete</a>
-                <a class="btn btn-outline-info m-1" href="#">Try it</a>
+                <a class="btn btn-outline-info m-1" href="{% url 'takes:tryout' quiz.slug %}">Try it</a>
                 {% if quiz.status == quiz.Status.REVIEW %}
                     <a class="btn btn-outline-info m-1" href="#">Cancel Review</a>
                 {% elif quiz.status == quiz.Status.DRAFT or quiz.status == quiz.Status.REJECTED %}
@@ -36,7 +36,7 @@
     <div class="list-group text-center">
         {% for quiz_item in quiz_items %}
             <a href="{% url 'quizzes:item_edit' quiz.slug quiz_item.index %}" class="list-group-item list-group-item-action mb-2 shadow-sm">
-                {{ quiz_item.question }}
+                {{quiz_item.index}}. {{ quiz_item.question }}
             </a>
         {% empty %}
         <p>Looks empty, isn't it? Consider adding something</p>

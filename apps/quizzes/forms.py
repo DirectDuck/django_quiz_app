@@ -31,7 +31,9 @@ class QuizItemForm(forms.ModelForm):
     def __init__(self, *args, **kwargs):
 
         if "quiz" in kwargs:
-            self._quiz = kwargs.pop("quiz")
+            self.quiz = kwargs.pop("quiz")
+        else:
+            raise Exception("No quiz passed")
 
         super().__init__(*args, **kwargs)
 
@@ -39,7 +41,7 @@ class QuizItemForm(forms.ModelForm):
         question = self.cleaned_data["question"]
 
         # Making sure that each quiz question is unique
-        if self._quiz.items.filter(question=question).exists():
+        if self.quiz.items.filter(question=question).exists():
             raise ValidationError("Item with that question already exists")
 
         return question

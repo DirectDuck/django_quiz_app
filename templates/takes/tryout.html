@@ -1,0 +1,42 @@
+{% extends '_base.html' %}
+
+{% load crispy_forms_tags %}
+{% load static %}
+
+
+{% block title %}Quiz tryout | DQA{% endblock title %}
+
+{% block content %}
+<div class="row gx-5 justify-content-center">
+    <div class="col-lg-8 col-xl-10">
+        <div class='text-center mb-3'>
+            <h2 class="mb-3">{{ quiz.title }}</h2>
+            <p>{{ quiz_items_count }} questions</p>
+        </div>
+        <form method="post">{% csrf_token %}
+            <!-- Rendering formset errors -->
+            {% if quiz_item_answer_formset.non_form_errors %}
+                <div class="alert alert-block alert-danger offset-sm-2 col-sm-8">
+                    {% for error in quiz_item_answer_formset.non_form_errors %}
+                        {{ error }}
+                    {% endfor %}
+                </div>
+            {% endif %}
+
+            {% for form in quiz_item_tryout_formset %}
+                <div class="row form-container align-items-center">
+                    <div class="offset-sm-2 col-sm-6 form-group">
+                        {{ form.answers|as_crispy_field }}
+                    </div>
+                </div>
+            {% endfor %}
+            {{ quiz_item_tryout_formset.management_form }}
+
+            <div class="d-flex justify-content-center mt-3">
+                <button class="btn btn-outline-primary mx-1" type="submit">Submit</button>
+                <a class="btn btn-outline-secondary mx-1" href="{% url 'quizzes:detail' quiz.slug %}">Cancel</a>
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock content %}
