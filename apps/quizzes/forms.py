@@ -12,6 +12,9 @@ from . import models
 
 
 class QuizForm(forms.ModelForm):
+    title = forms.CharField(min_length=3, max_length=65)
+    description = forms.CharField(min_length=3, max_length=255, widget=forms.Textarea)
+
     class Meta:
         model = models.Quiz
         fields = ("title", "description")
@@ -24,6 +27,8 @@ class QuizDeleteForm(forms.ModelForm):
 
 
 class QuizItemForm(forms.ModelForm):
+    question = forms.CharField(min_length=3, max_length=65)
+
     class Meta:
         model = models.QuizItem
         fields = ("question",)
