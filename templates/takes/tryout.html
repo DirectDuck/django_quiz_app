@@ -4,14 +4,14 @@
 {% load static %}
 
 
-{% block title %}Quiz tryout | DQA{% endblock title %}
+{% block title %}Quiz Tryout | DQA{% endblock title %}
 
 {% block content %}
 <div class="row gx-5 justify-content-center">
     <div class="col-lg-8 col-xl-10">
         <div class='text-center mb-3'>
             <h2 class="mb-3">{{ quiz.title }}</h2>
-            <p>{{ quiz_items_count }} questions</p>
+            <p>{{ quiz_items_count }} questions <span class="mx-1">&bull;</span> by {{ quiz.author }}</p>
         </div>
         <form method="post">{% csrf_token %}
             <!-- Rendering formset errors -->

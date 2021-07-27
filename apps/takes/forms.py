@@ -3,7 +3,7 @@ from django import forms
 
 class QuizItemTryoutForm(forms.Form):
 
-    answers = forms.ChoiceField(widget=forms.RadioSelect())
+    answers = forms.ChoiceField(widget=forms.RadioSelect(attrs={"required": True}))
 
     def __init__(self, *args, **kwargs):
         if "quiz" in kwargs:
@@ -30,7 +30,9 @@ class QuizItemTryoutForm(forms.Form):
         self.fields["answers"].choices = tuple(choices)
 
     def _set_question_in_label(self):
-        self.fields["answers"].label = self.quiz_item.question
+        self.fields["answers"].label = (
+            f"{self.quiz_item.index}. " f"{self.quiz_item.question}"
+        )
 
 
 class BaseQuizItemTryoutFormSet(forms.BaseFormSet):

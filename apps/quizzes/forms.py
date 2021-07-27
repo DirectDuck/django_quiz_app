@@ -46,7 +46,11 @@ class QuizItemForm(forms.ModelForm):
         question = self.cleaned_data["question"]
 
         # Making sure that each quiz question is unique
-        if self.quiz.items.filter(question=question).exists():
+        if (
+            self.quiz.items.filter(question=question)
+            .exclude(pk=self.instance.pk)
+            .exists()
+        ):
             raise ValidationError("Item with that question already exists")
 
         return question
