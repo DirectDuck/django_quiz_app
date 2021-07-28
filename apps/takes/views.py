@@ -30,10 +30,14 @@ def quiz_tryout_view(request, slug):
     )
 
     if request.POST:
-        # Filling formset with POST data and quiz object
+        # Filling formset with POST data and list of quiz items
         quiz_item_tryout_formset = QuizItemTryoutFormSet(
             request.POST,
-            form_kwargs={"quiz": quiz},
+            form_kwargs={
+                "quiz_item_list": list(
+                    quiz.items.order_by("index").prefetch_related("answers")
+                ),
+            },
         )
 
         if quiz_item_tryout_formset.is_valid():
@@ -61,7 +65,19 @@ def quiz_tryout_view(request, slug):
 
             return redirect("takes:tryout_results", slug=quiz.slug)
     else:
-        quiz_item_tryout_formset = QuizItemTryoutFormSet(form_kwargs={"quiz": quiz})
+        # Just in case you are wondering: form_kwargs argument
+        # will be interceipt in BaseQuizItemTryoutFormSet method
+        # and there we will get quiz_item from quiz_item_list,
+        # that is required to build form itself.
+        # There are many ways you can achieve that behavior, but
+        # this one gives the performance I am satisfied with
+        quiz_item_tryout_formset = QuizItemTryoutFormSet(
+            form_kwargs={
+                "quiz_item_list": list(
+                    quiz.items.order_by("index").prefetch_related("answers")
+                ),
+            }
+        )
 
     context = {
         "quiz": quiz,

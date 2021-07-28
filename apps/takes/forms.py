@@ -6,17 +6,10 @@ class QuizItemTryoutForm(forms.Form):
     answers = forms.ChoiceField(widget=forms.RadioSelect(attrs={"required": True}))
 
     def __init__(self, *args, **kwargs):
-        if "quiz" in kwargs:
-            quiz = kwargs.pop("quiz")
+        if "quiz_item" in kwargs:
+            self.quiz_item = kwargs.pop("quiz_item")
         else:
-            raise Exception("No quiz passed")
-
-        # Getting QuizItem based on form index in formset
-        if "quiz_item_index" in kwargs:
-            quiz_item_index = kwargs.pop("quiz_item_index")
-            self.quiz_item = quiz.items.get(index=quiz_item_index)
-        else:
-            raise Exception("No quiz_item_index passed")
+            raise Exception("No quiz_item passed")
 
         super().__init__(*args, **kwargs)
 
@@ -40,11 +33,13 @@ class QuizItemTryoutForm(forms.Form):
 
 class BaseQuizItemTryoutFormSet(forms.BaseFormSet):
     def get_form_kwargs(self, index):
-        """This method is used to pass form index in formset
-        to form itself"""
+        """This method is used to pass quiz_item from given queryset
+        to form as an argument"""
 
         kwargs = super().get_form_kwargs(index)
         if index is None:
             raise Exception("Invalid form index")
-        kwargs["quiz_item_index"] = index + 1
+
+        kwargs["quiz_item"] = kwargs.pop("quiz_item_list")[index]
+
         return kwargs
