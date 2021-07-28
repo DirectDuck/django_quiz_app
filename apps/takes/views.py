@@ -44,11 +44,16 @@ def quiz_tryout_view(request, slug):
 
             # Creating related to CompletedTryout CompletedTryoutAnswer
             # objects from form data
+            completed_tryout_answers = []
             for form in quiz_item_tryout_formset:
-                models.CompletedTryoutAnswer.create_from_answer_pk(
-                    completed_tryout,
-                    int(form.cleaned_data["answers"]),
+                completed_tryout_answers.append(
+                    models.CompletedTryoutAnswer.initialize_from_answer_pk(
+                        completed_tryout,
+                        int(form.cleaned_data["answers"]),
+                    )
                 )
+
+            models.CompletedTryoutAnswer.objects.bulk_create(completed_tryout_answers)
 
             # Updating CompletedTryout score to match number of correct answers
             # from related CompletedTryoutAnswer

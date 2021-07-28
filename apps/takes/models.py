@@ -50,8 +50,8 @@ class CompletedTryout(models.Model):
     @classmethod
     def remove_previous(cls, user, quiz):
         """Remove previous CompletedTryout instances for given user/quiz pair"""
-        for instance in cls.objects.filter(user=user, quiz=quiz):
-            instance.delete()
+
+        cls.objects.filter(user=user, quiz=quiz).delete()
 
 
 class CompletedTryoutAnswer(models.Model):
@@ -69,13 +69,13 @@ class CompletedTryoutAnswer(models.Model):
     )
 
     @classmethod
-    def create_from_answer_pk(cls, completed_tryout, item_answer_pk):
-        """Create CompletedTryoutAnswer from CompletedTryout
-        and item_answer's primary key"""
+    def initialize_from_answer_pk(cls, completed_tryout, item_answer_pk):
+        """Get initialized (but not created in db)
+        CompletedTryoutAnswer from CompletedTryout and QuizItemAnswer's pk"""
 
         item_answer = QuizItemAnswer.objects.get(pk=item_answer_pk)
 
-        return cls.objects.create(
+        return cls(
             completed_tryout=completed_tryout,
             item_answer=item_answer,
         )
