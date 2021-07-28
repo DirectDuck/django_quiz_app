@@ -11,6 +11,7 @@ class QuizItemTryoutForm(forms.Form):
         else:
             raise Exception("No quiz passed")
 
+        # Getting QuizItem based on form index in formset
         if "quiz_item_index" in kwargs:
             quiz_item_index = kwargs.pop("quiz_item_index")
             self.quiz_item = quiz.items.get(index=quiz_item_index)
@@ -19,6 +20,8 @@ class QuizItemTryoutForm(forms.Form):
 
         super().__init__(*args, **kwargs)
 
+        # Configuring answers field based on dynamically obtained
+        # QuizItem object
         self._generate_answers_choices()
         self._set_question_in_label()
 
@@ -37,6 +40,9 @@ class QuizItemTryoutForm(forms.Form):
 
 class BaseQuizItemTryoutFormSet(forms.BaseFormSet):
     def get_form_kwargs(self, index):
+        """This method is used to pass form index in formset
+        to form itself"""
+
         kwargs = super().get_form_kwargs(index)
         if index is None:
             raise Exception("Invalid form index")

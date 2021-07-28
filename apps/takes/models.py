@@ -22,6 +22,9 @@ class CompletedTryout(models.Model):
     score = models.PositiveIntegerField()
 
     def update_score(self):
+        """Update score based on number of correct answers
+        in related CompletedTryoutAnswer objects"""
+
         score = 0
 
         for answer in self.answers.all().select_related("item_answer"):
@@ -32,6 +35,8 @@ class CompletedTryout(models.Model):
         self.save()
 
     def get_result_message(self):
+        """Get result text from QuizResult based on current score"""
+
         quiz_result = self.quiz.results.filter(score=self.score)
 
         if not quiz_result.exists():
@@ -44,6 +49,7 @@ class CompletedTryout(models.Model):
 
     @classmethod
     def remove_previous(cls, user, quiz):
+        """Remove previous CompletedTryout instances for given user/quiz pair"""
         for instance in cls.objects.filter(user=user, quiz=quiz):
             instance.delete()
 
@@ -64,6 +70,9 @@ class CompletedTryoutAnswer(models.Model):
 
     @classmethod
     def create_from_answer_pk(cls, completed_tryout, item_answer_pk):
+        """Create CompletedTryoutAnswer from CompletedTryout
+        and item_answer's primary key"""
+
         item_answer = QuizItemAnswer.objects.get(pk=item_answer_pk)
 
         return cls.objects.create(

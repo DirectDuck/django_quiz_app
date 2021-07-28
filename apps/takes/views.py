@@ -15,31 +15,43 @@ def quiz_tryout_view(request, slug):
     if not (request.user.is_staff or request.user == quiz.author):
         raise PermissionDenied
 
+    # Removing previous CompletedTryouts from this user/quiz pair
     models.CompletedTryout.remove_previous(request.user, quiz)
 
+    # Getting number of quiz items (questions)
     quiz_items_count = quiz.items.count()
 
+    # Creating formset from QuizItemTryoutForm
     QuizItemTryoutFormSet = formset_factory(
         forms.QuizItemTryoutForm,
         formset=forms.BaseQuizItemTryoutFormSet,
+        # Setting number of forms to be equal to number of questions
         extra=quiz_items_count,
     )
 
     if request.POST:
+        # Filling formset with POST data and quiz object
         quiz_item_tryout_formset = QuizItemTryoutFormSet(
             request.POST,
             form_kwargs={"quiz": quiz},
         )
+
         if quiz_item_tryout_formset.is_valid():
+            # Creating CompletedTryout object
             completed_tryout = models.CompletedTryout.objects.create(
                 user=request.user, quiz=quiz, score=0
             )
+
+            # Creating related to CompletedTryout CompletedTryoutAnswer
+            # objects from form data
             for form in quiz_item_tryout_formset:
                 models.CompletedTryoutAnswer.create_from_answer_pk(
                     completed_tryout,
                     int(form.cleaned_data["answers"]),
                 )
 
+            # Updating CompletedTryout score to match number of correct answers
+            # from related CompletedTryoutAnswer
             completed_tryout.update_score()
 
             return redirect("takes:tryout_results", slug=quiz.slug)
