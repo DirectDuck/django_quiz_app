@@ -44,7 +44,7 @@ def detail_view(request, slug):
         slug=slug,
     )
 
-    if not (request.user.is_staff or request.user == quiz.author):
+    if not request.user == quiz.author:
         raise PermissionDenied
 
     quiz_items = quiz.items.order_by("index")
@@ -64,7 +64,7 @@ def edit_view(request, slug):
         slug=slug,
     )
 
-    if not (request.user.is_staff or request.user == quiz.author):
+    if not request.user == quiz.author:
         raise PermissionDenied
 
     if request.POST:
@@ -88,7 +88,7 @@ def delete_view(request, slug):
         slug=slug,
     )
 
-    if not (request.user.is_staff or request.user == quiz.author):
+    if not request.user == quiz.author:
         raise PermissionDenied
 
     if request.POST:

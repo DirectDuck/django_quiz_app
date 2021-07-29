@@ -14,7 +14,7 @@ def create_view(request, slug):
         slug=slug,
     )
 
-    if not (request.user.is_staff or request.user == quiz.author):
+    if not request.user == quiz.author:
         raise PermissionDenied
 
     # Initializing empty QuizItem
@@ -85,7 +85,7 @@ def edit_view(request, slug, index):
         slug=slug,
     )
 
-    if not (request.user.is_staff or request.user == quiz.author):
+    if not request.user == quiz.author:
         raise PermissionDenied
 
     # Getting QuizItem
@@ -149,7 +149,7 @@ def delete_view(request, slug, index):
         slug=slug,
     )
 
-    if not (request.user.is_staff or request.user == quiz.author):
+    if not request.user == quiz.author:
         raise PermissionDenied
 
     quiz_item = get_object_or_404(
