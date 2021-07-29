@@ -14,7 +14,7 @@ def list_view(request):
         "quizzes": quizzes,
     }
 
-    return TemplateResponse(request, "quizzes/list.html", context)
+    return TemplateResponse(request, "quizzes/quiz/list.html", context)
 
 
 @login_required
@@ -34,7 +34,7 @@ def create_view(request):
         "form": form,
     }
 
-    return TemplateResponse(request, "quizzes/create.html", context)
+    return TemplateResponse(request, "quizzes/quiz/create.html", context)
 
 
 @login_required
@@ -54,7 +54,7 @@ def detail_view(request, slug):
         "quiz_items": quiz_items,
     }
 
-    return TemplateResponse(request, "quizzes/detail.html", context)
+    return TemplateResponse(request, "quizzes/quiz/detail.html", context)
 
 
 @login_required
@@ -78,7 +78,7 @@ def edit_view(request, slug):
 
     context = {"quiz": quiz, "form": form}
 
-    return TemplateResponse(request, "quizzes/edit.html", context)
+    return TemplateResponse(request, "quizzes/quiz/edit.html", context)
 
 
 @login_required
@@ -102,4 +102,4 @@ def delete_view(request, slug):
 
     context = {"quiz": quiz, "form": form}
 
-    return TemplateResponse(request, "quizzes/delete.html", context)
+    return TemplateResponse(request, "quizzes/quiz/delete.html", context)
