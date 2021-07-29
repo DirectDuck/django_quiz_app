@@ -11,7 +11,15 @@ from .models import User
 
 @login_required
 def user_profile_view(request):
-    email_verified = EmailAddress.objects.get(user=request.user).verified
+    try:
+        email_verified = EmailAddress.objects.get(user=request.user).verified
+    except EmailAddress.DoesNotExist:
+        # Creating e-mail object in case user was not created
+        # via allauth
+        email_verified = EmailAddress.objects.create(
+            user=request.user,
+            email=request.user.email,
+        ).verified
 
     # Added second condition here, so if user actually resends
     # his verification e-mail, only one message will appear
@@ -31,7 +39,15 @@ def user_profile_view(request):
 
 @login_required
 def resend_verification_email_view(request):
-    user_email = EmailAddress.objects.get(user=request.user)
+    try:
+        user_email = EmailAddress.objects.get(user=request.user)
+    except:
+        # Creating e-mail object in case user was not created
+        # via allauth
+        user_email = EmailAddress.objects.create(
+            user=request.user,
+            email=request.user.email,
+        )
 
     if not user_email.verified:
         user_email.send_confirmation(request)

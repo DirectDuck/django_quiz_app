@@ -130,12 +130,6 @@ class QuizItem(models.Model):
 
     index = models.PositiveIntegerField()
 
-    class Meta:
-        constraints = [
-            # Every item must have it's own unique index
-            models.UniqueConstraint(fields=["quiz", "index"], name="unique_quiz_index"),
-        ]
-
     def __str__(self):
         return f"{self.quiz.title} - {self.index} item"
 
@@ -173,9 +167,3 @@ class QuizResult(models.Model):
         # Because QuizResult will be initialized automatically
         blank=True,
     )
-
-    class Meta:
-        # There can't be two different result messages for one score
-        constraints = [
-            models.UniqueConstraint(fields=["quiz", "score"], name="unique_quiz_score"),
-        ]

@@ -41,6 +41,7 @@ INSTALLED_APPS = [
     "apps.pages",
     "apps.quizzes",
     "apps.takes",
+    "apps.reviews",
 ]
 
 MIDDLEWARE = [

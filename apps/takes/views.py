@@ -68,9 +68,11 @@ def quiz_tryout_view(request, slug):
         # Just in case you are wondering: form_kwargs argument
         # will be interceipt in BaseQuizItemTryoutFormSet method
         # and there we will get quiz_item from quiz_item_list,
-        # that is required to build form itself.
+        # that is required to build the form itself.
         # There are many ways you can achieve that behavior, but
-        # this one gives the performance I am satisfied with
+        # this one gives the performance I am satisfied with.
+        # Kudos to datalowe
+        # https://forum.djangoproject.com/t/pass-different-parameters-to-each-form-in-formset/4040/2
         quiz_item_tryout_formset = QuizItemTryoutFormSet(
             form_kwargs={
                 "quiz_item_list": list(

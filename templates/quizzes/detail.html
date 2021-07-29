@@ -8,6 +8,7 @@
     <div class="col-lg-8 col-xl-6">
         <div class='text-center mb-4'>
             <div class="d-flex justify-content-center align-items-center flex-wrap">
+                <!-- This block is needed to center quiz title correctly -->
                 <div class="d-inline badge d-inline me-2"></div>
                 <h2 class="mb-3">{{ quiz.title }}</h2>
                 <div class="ms-2 badge bg-{{ quiz.get_status_badge_type }} bg-gradient mb-2">{{ quiz.get_status_display }}</div>
@@ -17,11 +18,11 @@
                 <a class="btn btn-outline-danger m-1" href="{% url 'quizzes:delete' quiz.slug %}">Delete</a>
                 <a class="btn btn-outline-info m-1" href="{% url 'takes:tryout' quiz.slug %}">Try it</a>
                 {% if quiz.status == quiz.Status.REVIEW %}
-                    <a class="btn btn-outline-info m-1" href="#">Cancel Review</a>
+                    <a class="btn btn-outline-info m-1" href="{% url 'reviews:cancel_review' quiz.slug %}">Cancel Review</a>
                 {% elif quiz.status == quiz.Status.DRAFT or quiz.status == quiz.Status.REJECTED %}
                     <a class="btn btn-outline-info m-1" href="{% url 'quizzes:edit' quiz.slug %}">Edit</a>
                     <a class="btn btn-outline-info m-1" href="{% url 'quizzes:results_edit' quiz.slug %}">Results</a>
-                    <a class="btn btn-outline-success m-1" href="#">Submit</a>
+                    <a class="btn btn-outline-success m-1" href="{% url 'reviews:submit' quiz.slug %}">Submit</a>
                 {% endif %}
             </div>
            <!--  {% if quiz.status == quiz.Status.REJECTED %}

@@ -25,14 +25,8 @@ class CompletedTryout(models.Model):
         """Update score based on number of correct answers
         in related CompletedTryoutAnswer objects"""
 
-        score = 0
-
-        for answer in self.answers.all().select_related("item_answer"):
-            if answer.item_answer.correct:
-                score += 1
-
-        self.score = score
-        self.save()
+        self.score = self.answers.filter(item_answer__correct=True).count()
+        self.save(update_fields=["score"])
 
     def get_result_message(self):
         """Get result text from QuizResult based on current score"""
