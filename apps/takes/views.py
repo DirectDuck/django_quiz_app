@@ -6,7 +6,7 @@ from django.shortcuts import get_object_or_404, redirect
 from django.template.response import TemplateResponse
 
 from apps.quizzes import models as quizzes_models
-from . import forms, models
+from . import forms, models, verificators
 
 
 def quiz_tryout_view(request, slug):
@@ -14,6 +14,13 @@ def quiz_tryout_view(request, slug):
 
     if not (request.user.is_staff or request.user == quiz.author):
         raise PermissionDenied
+
+    # Checking if quiz is suitable for tryout
+    suitable, message = verificators.is_quiz_suitable_for_tryout(quiz)
+
+    if not suitable:
+        messages.error(request, message)
+        return redirect("quizzes:detail", slug=quiz.slug)
 
     # Removing previous CompletedTryouts from this user/quiz pair
     models.CompletedTryout.remove_previous(request.user, quiz)

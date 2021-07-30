@@ -17,6 +17,9 @@ def edit_view(request, slug):
     if not request.user == quiz.author:
         raise PermissionDenied
 
+    if quiz.status != models.Quiz.Status.DRAFT:
+        raise PermissionDenied
+
     quiz.update_results()
 
     QuizResultFormSet = modelformset_factory(

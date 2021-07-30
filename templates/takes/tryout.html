@@ -34,7 +34,11 @@
 
             <div class="d-flex justify-content-center mt-3">
                 <button class="btn btn-outline-primary mx-1" type="submit">Submit</button>
-                <a class="btn btn-outline-secondary mx-1" href="{% url 'quizzes:detail' quiz.slug %}">Cancel</a>
+                {% if request.user.is_staff and quiz.status == quiz.Status.REVIEW %}
+                    <a class="btn btn-outline-secondary mx-1" href="{% url 'reviews:detail' quiz.slug %}">Cancel</a>
+                {% else %}
+                    <a class="btn btn-outline-secondary mx-1" href="{% url 'quizzes:detail' quiz.slug %}">Cancel</a>
+                {% endif %}
             </div>
         </form>
     </div>

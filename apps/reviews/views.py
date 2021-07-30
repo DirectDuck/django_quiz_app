@@ -68,7 +68,7 @@ def reviews_list_view(request):
         raise PermissionDenied
 
     quizzes = (
-        quizzes_models.Quiz.objects.filter(status=quizzes_models.Quiz.Status.REVIEW)
+        quizzes_models.Quiz.objects.exclude(status=quizzes_models.Quiz.Status.DRAFT)
         .order_by("-created")
         .prefetch_related("items")
     )
@@ -82,7 +82,7 @@ def reviews_list_view(request):
 
 def reviews_detail_view(request, slug):
     quiz = get_object_or_404(
-        quizzes_models.Quiz.objects.filter(status=quizzes_models.Quiz.Status.REVIEW),
+        quizzes_models.Quiz.objects.exclude(status=quizzes_models.Quiz.Status.DRAFT),
         slug=slug,
     )
 
@@ -101,7 +101,25 @@ def reviews_detail_view(request, slug):
 
 @login_required
 def reviews_approve_view(request, slug):
-    pass
+    quiz = get_object_or_404(
+        quizzes_models.Quiz.objects.filter(status=quizzes_models.Quiz.Status.REVIEW),
+        slug=slug,
+    )
+
+    if not request.user.is_staff:
+        raise PermissionDenied
+
+    if request.POST:
+        quiz.status = quizzes_models.Quiz.Status.APPROVED
+        quiz.published = True
+        quiz.save()
+        return redirect("reviews:list")
+
+    context = {
+        "quiz": quiz,
+    }
+
+    return TemplateResponse(request, "reviews/approve.html", context)
 
 
 @login_required

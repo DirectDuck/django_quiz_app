@@ -25,11 +25,6 @@
                     <a class="btn btn-outline-success m-1" href="{% url 'reviews:submit' quiz.slug %}">Submit</a>
                 {% endif %}
             </div>
-           <!--  {% if quiz.status == quiz.Status.REJECTED %}
-            <div class="mt-1">
-                <a class="btn btn-outline-danger mx-1" href="#">Rejected Message</a>
-            </div>
-            {% endif %} -->
         </div>
     </div>
 </div>
@@ -43,8 +38,10 @@
         <p>Looks empty, isn't it? Consider adding something</p>
         {% endfor %}
     </div>
+    {% if quiz.status == quiz.Status.DRAFT or quiz.status == quiz.Status.REJECTED %}
     <div class="d-flex justify-content-center mt-2">
         <a class="btn btn-outline-success" href="{% url 'quizzes:item_create' quiz.slug %}">Add Item</a>
     </div>
+    {% endif %}
 </div>
 {% endblock content %}

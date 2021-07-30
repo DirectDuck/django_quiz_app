@@ -17,6 +17,9 @@ def create_view(request, slug):
     if not request.user == quiz.author:
         raise PermissionDenied
 
+    if quiz.status != models.Quiz.Status.DRAFT:
+        raise PermissionDenied
+
     # Initializing empty QuizItem
     quiz_item = models.QuizItem()
 
@@ -88,6 +91,9 @@ def edit_view(request, slug, index):
     if not request.user == quiz.author:
         raise PermissionDenied
 
+    if quiz.status != models.Quiz.Status.DRAFT:
+        raise PermissionDenied
+
     # Getting QuizItem
     quiz_item = get_object_or_404(
         models.QuizItem.objects.all(),
@@ -150,6 +156,9 @@ def delete_view(request, slug, index):
     )
 
     if not request.user == quiz.author:
+        raise PermissionDenied
+
+    if quiz.status != models.Quiz.Status.DRAFT:
         raise PermissionDenied
 
     quiz_item = get_object_or_404(

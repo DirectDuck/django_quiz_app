@@ -14,4 +14,5 @@ urlpatterns = [
     ),
     path("list/", views.reviews_list_view, name="list"),
     path("<slug:slug>", views.reviews_detail_view, name="detail"),
+    path("<slug:slug>/approve/", views.reviews_approve_view, name="approve"),
 ]

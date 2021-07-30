@@ -17,8 +17,12 @@
             <div>
                 <a class="btn btn-outline-info m-1" href="{% url 'takes:tryout' quiz.slug %}">Try it</a>
                 <a class="btn btn-outline-info m-1" href="{% url 'quizzes:results_edit' quiz.slug %}">Results</a>
-                <a class="btn btn-outline-danger m-1" href="{% url 'reviews:submit' quiz.slug %}">Reject</a>
-                <a class="btn btn-outline-success m-1" href="{% url 'reviews:submit' quiz.slug %}">Approve</a>
+                {% if quiz.status == quiz.Status.REVIEW %}
+                    <a class="btn btn-outline-danger m-1" href="#">Reject</a>
+                    <a class="btn btn-outline-success m-1" href="{% url 'reviews:approve' quiz.slug %}">Approve</a>
+                {% else %}
+                    <a class="btn btn-outline-danger m-1" href="#">Cancel</a>
+                {% endif %}
             </div>
         </div>
     </div>
@@ -32,9 +36,6 @@
         {% empty %}
         <p>Looks empty, isn't it? Consider adding something</p>
         {% endfor %}
-    </div>
-    <div class="d-flex justify-content-center mt-2">
-        <a class="btn btn-outline-success" href="{% url 'quizzes:item_create' quiz.slug %}">Add Item</a>
     </div>
 </div>
 {% endblock content %}

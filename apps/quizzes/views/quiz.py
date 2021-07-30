@@ -71,6 +71,9 @@ def edit_view(request, slug):
     if not request.user == quiz.author:
         raise PermissionDenied
 
+    if quiz.status != models.Quiz.Status.DRAFT:
+        raise PermissionDenied
+
     if request.POST:
         form = forms.QuizForm(request.POST, instance=quiz)
 
