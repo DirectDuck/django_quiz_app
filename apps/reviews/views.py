@@ -78,3 +78,32 @@ def reviews_list_view(request):
     }
 
     return TemplateResponse(request, "reviews/list.html", context)
+
+
+def reviews_detail_view(request, slug):
+    quiz = get_object_or_404(
+        quizzes_models.Quiz.objects.filter(status=quizzes_models.Quiz.Status.REVIEW),
+        slug=slug,
+    )
+
+    if not request.user.is_staff:
+        raise PermissionDenied
+
+    quiz_items = quiz.items.order_by("index")
+
+    context = {
+        "quiz": quiz,
+        "quiz_items": quiz_items,
+    }
+
+    return TemplateResponse(request, "reviews/detail.html", context)
+
+
+@login_required
+def reviews_approve_view(request, slug):
+    pass
+
+
+@login_required
+def reviews_reject_view(request, slug):
+    pass

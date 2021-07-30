@@ -1,0 +1,40 @@
+{% extends '_base.html' %}
+
+
+{% block title %}{{ quiz.title }} Review | DQA{% endblock title %}
+
+{% block content %}
+<div class="row gx-5 justify-content-center">
+    <div class="col-lg-8 col-xl-6">
+        <div class='text-center mb-4'>
+            <div class="d-flex justify-content-center align-items-center flex-wrap">
+                <!-- This block is needed to center quiz title correctly -->
+                <div class="d-inline badge d-inline me-2"></div>
+                <h2 class="mb-3">{{ quiz.title }}</h2>
+                <div class="ms-2 badge bg-{{ quiz.get_status_badge_type }} bg-gradient mb-2">{{ quiz.get_status_display }}</div>
+            </div>
+            <p>{{ quiz.description }}</p>
+            <div>
+                <a class="btn btn-outline-info m-1" href="{% url 'takes:tryout' quiz.slug %}">Try it</a>
+                <a class="btn btn-outline-info m-1" href="{% url 'quizzes:results_edit' quiz.slug %}">Results</a>
+                <a class="btn btn-outline-danger m-1" href="{% url 'reviews:submit' quiz.slug %}">Reject</a>
+                <a class="btn btn-outline-success m-1" href="{% url 'reviews:submit' quiz.slug %}">Approve</a>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="col-xl-6 offset-xl-3">
+    <div class="list-group text-center">
+        {% for quiz_item in quiz_items %}
+            <a href="{% url 'quizzes:item_edit' quiz.slug quiz_item.index %}" class="list-group-item list-group-item-action mb-2 shadow-sm">
+                {{quiz_item.index}}. {{ quiz_item.question }}
+            </a>
+        {% empty %}
+        <p>Looks empty, isn't it? Consider adding something</p>
+        {% endfor %}
+    </div>
+    <div class="d-flex justify-content-center mt-2">
+        <a class="btn btn-outline-success" href="{% url 'quizzes:item_create' quiz.slug %}">Add Item</a>
+    </div>
+</div>
+{% endblock content %}

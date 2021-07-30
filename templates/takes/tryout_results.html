@@ -17,7 +17,11 @@
 
         <div class="d-flex justify-content-center mt-3">
             <a class="btn btn-outline-primary mx-1" href="{% url 'takes:tryout' quiz.slug %}">Retake</a>
-            <a class="btn btn-outline-secondary mx-1" href="{% url 'quizzes:detail' quiz.slug %}">Go back</a>
+            {% if request.user.is_staff and quiz.status == quiz.Status.REVIEW %}
+                <a class="btn btn-outline-secondary mx-1" href="{% url 'reviews:detail' quiz.slug %}">Go back</a>
+            {% else %}
+                <a class="btn btn-outline-secondary mx-1" href="{% url 'quizzes:detail' quiz.slug %}">Go back</a>
+            {% endif %}
         </div>
     </div>
 </div>

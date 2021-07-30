@@ -17,7 +17,7 @@
         <div class="card h-100 shadow border-0">
             <div class="card-body p-4">
                 <div class="badge bg-{{ quiz.get_status_badge_type }} bg-gradient mb-2">{{ quiz.get_status_display }}</div>
-                <a class="text-decoration-none link-dark stretched-link" href="{% url 'quizzes:detail' quiz.slug %}"><h5 class="card-title mb-3">{{ quiz.title }}</h5></a>
+                <a class="text-decoration-none link-dark stretched-link" href="{% url 'reviews:detail' quiz.slug %}"><h5 class="card-title mb-3">{{ quiz.title }}</h5></a>
                 <p class="card-text mb-0">{{ quiz.description }}</p>
             </div>
             <div class="card-footer p-4 pt-0 bg-transparent border-top-0">

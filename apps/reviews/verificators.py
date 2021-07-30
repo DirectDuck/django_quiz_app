@@ -12,6 +12,9 @@ def is_quiz_suitable_for_submission(quiz):
 
     quiz_results = quiz.results.all()
 
+    if quiz_results.count() < quiz_items_count:
+        return (False, "You need to fill the results to submit quiz.")
+
     if quiz_results.filter(text=""):
         return (False, "You need to fill the results to submit quiz.")
 

@@ -13,4 +13,5 @@ urlpatterns = [
         name="cancel_review",
     ),
     path("list/", views.reviews_list_view, name="list"),
+    path("<slug:slug>", views.reviews_detail_view, name="detail"),
 ]
