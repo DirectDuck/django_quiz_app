@@ -8,7 +8,11 @@ from apps.quizzes import models, forms
 
 @login_required
 def list_view(request):
-    quizzes = models.Quiz.objects.filter(author=request.user).order_by("-created")
+    quizzes = (
+        models.Quiz.objects.filter(author=request.user)
+        .order_by("-created")
+        .prefetch_related("items")
+    )
 
     context = {
         "quizzes": quizzes,

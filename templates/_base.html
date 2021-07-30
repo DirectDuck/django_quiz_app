@@ -30,7 +30,9 @@
                             <li class="nav-item mx-1"><a class="nav-link" href="{% url 'pages:home' %}">Home</a></li>
                             <li class="nav-item mx-1"><a class="nav-link" href="#">Explore</a></li>
                             <li class="nav-item mx-1"><a class="nav-link" href="#">Results</a></li>
-                            <li class="nav-item mx-1"><a class="nav-link" href="#">Review</a></li>
+                            {% if request.user.is_staff %}
+                                <li class="nav-item mx-1"><a class="nav-link" href="{% url 'reviews:list' %}">Review</a></li>
+                            {% endif %}
                             <li class="nav-item dropdown mx-1">
                                 <a class="nav-link dropdown-toggle" id="navbarDropdownBlog" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">Quizzes</a>
                                 <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdownBlog">

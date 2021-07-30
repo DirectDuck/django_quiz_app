@@ -12,4 +12,5 @@ urlpatterns = [
         views.quiz_cancel_review_view,
         name="cancel_review",
     ),
+    path("list/", views.reviews_list_view, name="list"),
 ]

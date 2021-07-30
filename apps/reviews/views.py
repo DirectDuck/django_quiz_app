@@ -59,3 +59,22 @@ def quiz_cancel_review_view(request, slug):
     messages.success(request, message)
 
     return redirect("quizzes:detail", slug=quiz.slug)
+
+
+@login_required
+def reviews_list_view(request):
+
+    if not request.user.is_staff:
+        raise PermissionDenied
+
+    quizzes = (
+        quizzes_models.Quiz.objects.filter(status=quizzes_models.Quiz.Status.REVIEW)
+        .order_by("-created")
+        .prefetch_related("items")
+    )
+
+    context = {
+        "quizzes": quizzes,
+    }
+
+    return TemplateResponse(request, "reviews/list.html", context)
