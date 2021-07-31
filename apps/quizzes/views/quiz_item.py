@@ -17,7 +17,7 @@ def create_view(request, slug):
     if not request.user == quiz.author:
         raise PermissionDenied
 
-    if quiz.status != models.Quiz.Status.DRAFT:
+    if quiz.status not in (models.Quiz.Status.DRAFT, models.Quiz.Status.REJECTED):
         raise PermissionDenied
 
     if quiz.items.count() > quiz.MAX_ITEMS_COUNT:
@@ -94,7 +94,7 @@ def edit_view(request, slug, index):
     if not request.user == quiz.author:
         raise PermissionDenied
 
-    if quiz.status != models.Quiz.Status.DRAFT:
+    if quiz.status not in (models.Quiz.Status.DRAFT, models.Quiz.Status.REJECTED):
         raise PermissionDenied
 
     # Getting QuizItem
@@ -161,7 +161,7 @@ def delete_view(request, slug, index):
     if not request.user == quiz.author:
         raise PermissionDenied
 
-    if quiz.status != models.Quiz.Status.DRAFT:
+    if quiz.status not in (models.Quiz.Status.DRAFT, models.Quiz.Status.REJECTED):
         raise PermissionDenied
 
     quiz_item = get_object_or_404(

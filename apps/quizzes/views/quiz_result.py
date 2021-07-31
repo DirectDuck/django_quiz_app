@@ -17,7 +17,7 @@ def edit_view(request, slug):
     if not request.user == quiz.author:
         raise PermissionDenied
 
-    if quiz.status != models.Quiz.Status.DRAFT:
+    if quiz.status not in (models.Quiz.Status.DRAFT, models.Quiz.Status.REJECTED):
         raise PermissionDenied
 
     quiz.update_results()

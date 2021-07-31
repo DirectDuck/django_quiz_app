@@ -5,7 +5,7 @@ from django.shortcuts import get_object_or_404, redirect
 from django.template.response import TemplateResponse
 
 from apps.quizzes import models as quizzes_models
-from apps.reviews import verificators
+from apps.reviews import verificators, forms
 
 
 def quiz_cancel_approved_view(request, slug):
@@ -99,4 +99,31 @@ def reviews_approve_view(request, slug):
 
 @login_required
 def reviews_reject_view(request, slug):
-    pass
+    quiz = get_object_or_404(
+        quizzes_models.Quiz.objects.filter(status=quizzes_models.Quiz.Status.REVIEW),
+        slug=slug,
+    )
+
+    if not request.user.is_staff:
+        raise PermissionDenied
+
+    if request.POST:
+        form = forms.QuizRejectedMessageForm(request.POST)
+
+        if form.is_valid():
+            instance = form.save(commit=False)
+            instance.quiz = quiz
+            instance.save()
+            quiz.status = quizzes_models.Quiz.Status.REJECTED
+            quiz.save()
+            return redirect("reviews:list")
+
+    else:
+        form = forms.QuizRejectedMessageForm()
+
+    context = {
+        "quiz": quiz,
+        "form": form,
+    }
+
+    return TemplateResponse(request, "reviews/staff/reject.html", context)

@@ -7,6 +7,11 @@
 <div class="row gx-5 justify-content-center">
     <div class="col-lg-8 col-xl-6">
         <div class='text-center mb-4'>
+            {% if quiz.status == quiz.Status.REJECTED %}
+                <div class="alert alert-danger mb-3">
+                    Reason: {{ quiz.rejected_message.text }}
+                </div>
+            {% endif %}
             <div class="d-flex justify-content-center align-items-center flex-wrap">
                 <!-- This block is needed to center quiz title correctly -->
                 <div class="d-inline badge d-inline me-2"></div>
@@ -25,6 +30,9 @@
                     <a class="btn btn-outline-info m-1" href="{% url 'quizzes:stricted_results' quiz.slug %}">Results</a>
                     <a class="btn btn-outline-warning m-1" href="{% url 'reviews:cancel_review' quiz.slug %}">Cancel</a>
                 {% elif quiz.status == quiz.Status.REJECTED %}
+                    <a class="btn btn-outline-info m-1" href="{% url 'quizzes:edit' quiz.slug %}">Edit</a>
+                    <a class="btn btn-outline-info m-1" href="{% url 'quizzes:results_edit' quiz.slug %}">Results</a>
+                    <a class="btn btn-outline-success m-1" href="{% url 'reviews:submit' quiz.slug %}">Submit</a>
                 {% elif quiz.status == quiz.Status.APPROVED %}
                     <a class="btn btn-outline-info m-1" href="{% url 'quizzes:stricted_results' quiz.slug %}">Results</a>
                     <a class="btn btn-outline-warning m-1" href="{% url 'reviews:user_cancel_approved' quiz.slug %}">Cancel</a>

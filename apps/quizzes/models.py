@@ -76,10 +76,7 @@ class Quiz(models.Model):
     def get_available_item_index(self):
         """Get free index based on quiz items presented"""
 
-        index = 1
-
-        while self.items.filter(index=index).exists():
-            index += 1
+        index = self.items.order_by("-index")[0].index + 1
 
         return index
 
@@ -89,9 +86,14 @@ class Quiz(models.Model):
 
         index = 1
 
+        items = []
+
         for item in self.items.order_by("index"):
             item.index = index
-            item.save()
+            items.append(item)
+            index += 1
+
+        self.items.bulk_update(items, ["index"])
 
     def update_results(self) -> None:
         """Create/update/delete related QuizResult objects

@@ -27,4 +27,9 @@ urlpatterns = [
         staff.quiz_cancel_approved_view,
         name="staff_cancel_approved",
     ),
+    path(
+        "<slug:slug>/reject/",
+        staff.reviews_reject_view,
+        name="reject",
+    ),
 ]

@@ -1,0 +1,24 @@
+{% extends '_base.html' %}
+
+{% load crispy_forms_tags %}
+
+
+{% block title %}Reject Quiz | DQA{% endblock title %}
+
+{% block content %}
+<div class="row gx-5 justify-content-center">
+    <div class="col-lg-8 col-xl-6">
+        <div class='text-center mb-3'>
+            <h2 class="mb-3">Reject {{ quiz.title }}</h2>
+            <p>Are you sure you want to reject this quiz?</p>
+        </div>
+        <form method="post">{% csrf_token %}
+            {{ form|crispy }}
+            <div class="d-flex justify-content-center">
+                <button class="btn btn-outline-danger" type="submit">Yes</button>
+                <a class="btn btn-outline-secondary ms-2" href="{% url 'reviews:detail' quiz.slug %}">No way</a>
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock content %}
