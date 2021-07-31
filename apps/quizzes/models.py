@@ -9,6 +9,9 @@ from django.utils.crypto import get_random_string
 class Quiz(models.Model):
     """Model representing quizzes"""
 
+    MIN_ITEMS_COUNT = 3
+    MAX_ITEMS_COUNT = 15
+
     class Status(models.IntegerChoices):
         DRAFT = 1  # When initially created
         REVIEW = 2  # When author finishes quiz creation and staff reviews the work

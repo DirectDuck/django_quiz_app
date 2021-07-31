@@ -4,11 +4,17 @@ from apps.quizzes import models as quizzes_models
 def is_quiz_suitable_for_submission(quiz):
     quiz_items_count = quiz.items.count()
 
-    if quiz_items_count < 3:
-        return (False, "You need to have at least 3 questions to submit quiz.")
+    if quiz_items_count < quiz.MIN_ITEMS_COUNT:
+        return (
+            False,
+            f"You need to have at least {quiz.MIN_ITEMS_COUNT} questions to submit quiz.",
+        )
 
-    if quiz_items_count > 15:
-        return (False, "You need to have at most 15 questions to submit quiz.")
+    if quiz_items_count > quiz.MAX_ITEMS_COUNT:
+        return (
+            False,
+            f"You need to have at most {quiz.MAX_ITEMS_COUNT} questions to submit quiz.",
+        )
 
     quiz_results = quiz.results.all()
 

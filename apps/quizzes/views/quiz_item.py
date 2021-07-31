@@ -20,6 +20,9 @@ def create_view(request, slug):
     if quiz.status != models.Quiz.Status.DRAFT:
         raise PermissionDenied
 
+    if quiz.items.count() > quiz.MAX_ITEMS_COUNT:
+        raise PermissionDenied
+
     # Initializing empty QuizItem
     quiz_item = models.QuizItem()
 
