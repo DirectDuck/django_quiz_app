@@ -62,6 +62,63 @@ def quiz_cancel_review_view(request, slug):
 
 
 @login_required
+def quiz_cancel_approved_view(request, slug):
+    quiz = get_object_or_404(
+        quizzes_models.Quiz.objects.all(),
+        slug=slug,
+    )
+
+    if not request.user == quiz.author:
+        raise PermissionDenied
+
+    suitable, message = verificators.is_quiz_suitable_for_approved_cancel(quiz)
+
+    if not suitable:
+        messages.error(request, message)
+        return redirect("quizzes:detail", slug=quiz.slug)
+
+    if request.POST:
+        quiz.status = quizzes_models.Quiz.Status.DRAFT
+        quiz.published = False
+        quiz.save()
+        return redirect("quizzes:detail", slug=quiz.slug)
+
+    context = {
+        "quiz": quiz,
+    }
+
+    return TemplateResponse(request, "reviews/cancel_approved.html", context)
+
+
+def quiz_staff_cancel_approved_view(request, slug):
+    quiz = get_object_or_404(
+        quizzes_models.Quiz.objects.all(),
+        slug=slug,
+    )
+
+    if not request.user == quiz.author:
+        raise PermissionDenied
+
+    suitable, message = verificators.is_quiz_suitable_for_approved_cancel(quiz)
+
+    if not suitable:
+        messages.error(request, message)
+        return redirect("reviews:detail", slug=quiz.slug)
+
+    if request.POST:
+        quiz.status = quizzes_models.Quiz.Status.REVIEW
+        quiz.published = False
+        quiz.save()
+        return redirect("reviews:detail", slug=quiz.slug)
+
+    context = {
+        "quiz": quiz,
+    }
+
+    return TemplateResponse(request, "reviews/staff_cancel_approved.html", context)
+
+
+@login_required
 def reviews_list_view(request):
 
     if not request.user.is_staff:

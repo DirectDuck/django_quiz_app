@@ -45,7 +45,11 @@
             </div>
         {% endfor %}
         <div class="d-flex justify-content-center mt-4">
-            <a class="btn btn-outline-secondary mx-1" href="{% url 'reviews:detail' quiz.slug %}">Go back</a>
+            {% if request.user.is_staff %}
+                <a class="btn btn-outline-secondary mx-1" href="{% url 'reviews:detail' quiz.slug %}">Go back</a>
+            {% else %}
+                <a class="btn btn-outline-secondary mx-1" href="{% url 'quizzes:detail' quiz.slug %}">Go back</a>
+            {% endif %}
         </div>
     </div>
 </div>

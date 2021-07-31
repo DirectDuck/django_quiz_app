@@ -35,3 +35,10 @@ def is_quiz_suitable_for_review_cancel(quiz):
         return (False, "This quiz is not on review.")
 
     return (True, "Your quiz is now canceled from review.")
+
+
+def is_quiz_suitable_for_approved_cancel(quiz):
+    if quiz.status != quiz.Status.APPROVED:
+        return (False, "This quiz is not approved.")
+
+    return (True, "Your quiz is now canceled from approve.")
