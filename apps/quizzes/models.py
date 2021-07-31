@@ -46,13 +46,14 @@ class Quiz(models.Model):
 
     def save(self, *args, **kwargs):
         # Generating unique slug
-        slugified_title = slugify(unidecode(self.title))
-        slug = get_random_string(length=4) + "-" + slugified_title
-
-        while Quiz.objects.filter(slug=slug).exists():
+        if not self.slug:
+            slugified_title = slugify(unidecode(self.title))[:30]
             slug = get_random_string(length=4) + "-" + slugified_title
 
-        self.slug = slug
+            while Quiz.objects.filter(slug=slug).exists():
+                slug = get_random_string(length=4) + "-" + slugified_title
+
+            self.slug = slug
         super().save(*args, **kwargs)
 
     def get_status_badge_type(self):
