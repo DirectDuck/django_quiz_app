@@ -1,0 +1,52 @@
+{% extends '_base.html' %}
+
+{% load crispy_forms_tags %}
+{% load static %}
+
+
+{% block title %}Quiz Item | DQA{% endblock title %}
+
+{% block content %}
+<div class="row gx-5 justify-content-center">
+    <div class="col-lg-8 col-xl-10">
+        <div class='text-center mb-3'>
+            <h2 class="mb-3">Item {{ quiz_item.index }} from {{ quiz.title }}</h2>
+        </div>
+        <div class="row">
+            <div class="offset-sm-2 col-sm-8">
+                <label class="form-label">Question</label>
+                <div>
+                    <input type="text" class="textinput textInput form-control" value="{{ quiz_item.question }}" disabled>
+                </div>
+            </div>
+        </div>
+
+        {% for answer in quiz_item_answers %}
+            <div class="row form-container align-items-center mt-4">
+                <div class="offset-sm-2 col-sm-6 form-group">
+                    <label class="form-label">Answer</label>
+                    <div>
+                        <input type="text" class="textinput textInput form-control" value="{{ answer.text }}" disabled>
+                    </div>
+                </div>
+
+                <div class="col-sm-2 form-group mt-4">
+                    <div class="form-check mt-2">
+                        {% if answer.correct %}
+                            <input class="form-check-input" type="checkbox" value="true" disabled checked>
+                        {% else %}
+                            <input class="form-check-input" type="checkbox" value="true" disabled>
+                        {% endif %}
+                        <label class="form-check-label" for="defaultCheck2">
+                            Correct
+                        </label>
+                    </div>
+                </div>
+            </div>
+        {% endfor %}
+        <div class="d-flex justify-content-center mt-4">
+            <a class="btn btn-outline-secondary mx-1" href="{% url 'reviews:detail' quiz.slug %}">Go back</a>
+        </div>
+    </div>
+</div>
+{% endblock content %}

@@ -1,0 +1,36 @@
+{% extends '_base.html' %}
+
+{% load static %}
+
+
+{% block title %}Quiz Results | DQA{% endblock title %}
+
+{% block content %}
+<div class="row gx-5 justify-content-center">
+    <div class="col-lg-8 col-xl-10">
+        <div class='text-center mb-3'>
+            <h2 class="mb-3">{{ quiz.title }} Results</h2>
+            <p>When user completes your quiz, you want to display him a message based on his score</p>
+        </div>
+        {% for result in quiz_results %}
+            <div class="row form-container align-items-center mt-4">
+                <div class="offset-sm-2 col-sm-2 form-group">
+                    <label class="form-label">Score</label>
+                    <div class="ms-2 mb-1 mt-2">
+                        {{ result.score }}/{{ quiz_max_score }}
+                    </div>
+                </div>
+                <div class="col-sm-6 form-group">
+                    <label class="form-label">Result</label>
+                    <div>
+                        <input type="text" class="textinput textInput form-control" value="{{ result.text }}" disabled>
+                    </div>
+                </div>
+            </div>
+        {% endfor %}
+        <div class="d-flex justify-content-center mt-3">
+            <a class="btn btn-outline-secondary mx-1" href="{% url 'reviews:detail' quiz.slug %}">Go back</a>
+        </div>
+    </div>
+</div>
+{% endblock content %}

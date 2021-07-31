@@ -25,15 +25,15 @@
 
             <!-- Rendering PollItemAnswer formset -->
             {% for form in quiz_result_formset %}
-                <div class="row form-container align-items-center">
-                    <div class="offset-sm-2 col-sm-2 form-group">
+                <div class="row form-container align-items-center mt-4">
+                    <div class="offset-sm-2 col-sm-2 form-group pb-3">
                         {{ form.id }}
                         <label class="form-label">Score</label>
-                        <div class="ms-2">
+                        <div class="ms-2 mb-1 mt-2">
                             {{ form.instance.score }}/{{ quiz_max_score }}
                         </div>
                     </div>
-                    <div class="col-sm-6 form-group mt-4">
+                    <div class="col-sm-6 form-group">
                         {{ form.text|as_crispy_field }}
                     </div>
                 </div>

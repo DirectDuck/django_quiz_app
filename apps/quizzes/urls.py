@@ -4,6 +4,7 @@ from .views import (
     quiz,
     quiz_item,
     quiz_result,
+    details_stricted,
 )
 
 
@@ -39,5 +40,16 @@ urlpatterns = [
         "<slug:slug>/results/",
         quiz_result.edit_view,
         name="results_edit",
+    ),
+    # Details stricted views
+    path(
+        "<slug:slug>/item/<int:index>/stricted/",
+        details_stricted.quiz_item_view,
+        name="stricted_item",
+    ),
+    path(
+        "<slug:slug>/results/stricted/",
+        details_stricted.quiz_results_view,
+        name="stricted_results",
     ),
 ]

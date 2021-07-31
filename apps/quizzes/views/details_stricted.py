@@ -7,51 +7,48 @@ from apps.quizzes import models, forms
 
 
 @login_required
-def quiz_item_details_stricted_view(request, slug, index):
+def quiz_item_view(request, slug, index):
     quiz = get_object_or_404(
         models.Quiz.objects.all(),
         slug=slug,
     )
 
-    if not request.user == quiz.author:
+    if not (request.user == quiz.author or request.user.is_staff):
         raise PermissionDenied
 
-    if quiz.status != models.Quiz.Status.DRAFT:
-        raise PermissionDenied
-
-    # Getting QuizItem
     quiz_item = get_object_or_404(
         models.QuizItem.objects.all(),
         quiz__slug=slug,
         index=index,
     )
 
+    quiz_item_answers = quiz_item.answers.all()
+
     context = {
         "quiz": quiz,
         "quiz_item": quiz_item,
-        "quiz_item_form": quiz_item_form,
-        "quiz_item_answer_formset": quiz_item_answer_formset,
+        "quiz_item_answers": quiz_item_answers,
     }
 
-    return TemplateResponse(request, "quizzes/item/edit.html", context)
+    return TemplateResponse(request, "quizzes/details_stricted/item.html", context)
 
 
 @login_required
-def quiz_resulsts_details_stricted_view(request, slug):
+def quiz_results_view(request, slug):
     quiz = get_object_or_404(
         models.Quiz.objects.all(),
         slug=slug,
     )
 
-    if not request.user == quiz.author:
+    if not (request.user == quiz.author or request.user.is_staff):
         raise PermissionDenied
 
-    if quiz.status != models.Quiz.Status.DRAFT:
-        raise PermissionDenied
+    quiz_results = models.QuizResult.objects.filter(quiz=quiz).order_by("score")
 
     context = {
         "quiz": quiz,
         "quiz_max_score": quiz.items.count(),
+        "quiz_results": quiz_results,
     }
 
-    return TemplateResponse(request, "quizzes/result/edit.html", context)
+    return TemplateResponse(request, "quizzes/details_stricted/results.html", context)

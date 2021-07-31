@@ -16,7 +16,7 @@
             <p>{{ quiz.description }}</p>
             <div>
                 <a class="btn btn-outline-info m-1" href="{% url 'takes:tryout' quiz.slug %}">Try it</a>
-                <a class="btn btn-outline-info m-1" href="{% url 'quizzes:results_edit' quiz.slug %}">Results</a>
+                <a class="btn btn-outline-info m-1" href="{% url 'quizzes:stricted_results' quiz.slug %}">Results</a>
                 {% if quiz.status == quiz.Status.REVIEW %}
                     <a class="btn btn-outline-danger m-1" href="#">Reject</a>
                     <a class="btn btn-outline-success m-1" href="{% url 'reviews:approve' quiz.slug %}">Approve</a>
@@ -30,7 +30,7 @@
 <div class="col-xl-6 offset-xl-3">
     <div class="list-group text-center">
         {% for quiz_item in quiz_items %}
-            <a href="{% url 'quizzes:item_edit' quiz.slug quiz_item.index %}" class="list-group-item list-group-item-action mb-2 shadow-sm">
+            <a href="{% url 'quizzes:stricted_item' quiz.slug quiz_item.index %}" class="list-group-item list-group-item-action mb-2 shadow-sm">
                 {{quiz_item.index}}. {{ quiz_item.question }}
             </a>
         {% empty %}
