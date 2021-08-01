@@ -3,7 +3,7 @@ from django.core.exceptions import PermissionDenied
 from django.shortcuts import get_object_or_404, redirect
 from django.template.response import TemplateResponse
 
-from apps.quizzes import models, forms
+from apps.quizzes import models, forms, filters
 
 
 @login_required
@@ -14,8 +14,10 @@ def list_view(request):
         .prefetch_related("items")
     )
 
+    quizzes_filter = filters.QuizListFilter(request.GET, quizzes)
+
     context = {
-        "quizzes": quizzes,
+        "quizzes_filter": quizzes_filter,
     }
 
     return TemplateResponse(request, "quizzes/quiz/list.html", context)

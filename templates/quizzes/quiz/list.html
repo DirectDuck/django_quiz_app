@@ -1,5 +1,7 @@
 {% extends '_base.html' %}
 
+{% load crispy_forms_tags %}
+
 
 {% block title %}Quizes List | DQA{% endblock title %}
 
@@ -11,10 +13,13 @@
             <p>Here's what you have created so far</p>
             <a class="btn btn-outline-success mt-2" href="{% url 'quizzes:create' %}">Create</a>
         </div>
+        <form method="get" class="mb-4 offset-xl-4 col-xl-4" id="filter_form">
+            {{ quizzes_filter.form|crispy }}
+        </form>
     </div>
 </div>
 <div class="row gx-5">
-    {% for quiz in quizzes %}
+    {% for quiz in quizzes_filter.qs %}
     <div class="col-lg-4 mb-5">
         <div class="card h-100 shadow border-1">
             <div class="card-body p-4">
@@ -39,3 +44,13 @@
     {% endfor %}
 </div>
 {% endblock content %}
+
+{% block js %}
+<script type="text/javascript">
+    $(document).ready(function() {
+        $('#id_status').bind('change', function(event) {
+            $('#filter_form').trigger("submit");
+        });
+    });
+</script>
+{% endblock js %}

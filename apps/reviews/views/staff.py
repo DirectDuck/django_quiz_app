@@ -5,7 +5,7 @@ from django.shortcuts import get_object_or_404, redirect
 from django.template.response import TemplateResponse
 
 from apps.quizzes import models as quizzes_models
-from apps.reviews import verificators, forms, models
+from apps.reviews import verificators, forms, models, filters
 
 
 @login_required
@@ -49,8 +49,10 @@ def reviews_list_view(request):
         .prefetch_related("items")
     )
 
+    quizzes_filter = filters.QuizReviewFilter(request.GET, quizzes)
+
     context = {
-        "quizzes": quizzes,
+        "quizzes_filter": quizzes_filter,
     }
 
     return TemplateResponse(request, "reviews/staff/list.html", context)
