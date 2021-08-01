@@ -15,7 +15,7 @@
             <p>Here's what you have created so far</p>
             <a class="btn btn-outline-success mt-2 mb-3" href="{% url 'quizzes:create' %}">Create</a>
             <div class="fs-5" style="color: #9c9c9c;">
-                {% sort_link "Title" "title" %}
+                {% sort_link "Title" "ititle" %}
                 &middot;
                 {% sort_link "Created" "created" %}
                 &middot;
@@ -28,7 +28,7 @@
     </div>
 </div>
 <div class="row gx-5">
-    {% for quiz in quizzes_filter_paginated %}
+    {% for quiz in quizzes %}
     <div class="col-lg-4 mb-5">
         <div class="card h-100 shadow border-1">
             <div class="card-body p-4">
@@ -55,15 +55,15 @@
     <div class="d-flex mt-2 justify-content-center text-center">
         <span class="step-links">
             <span class="current">
-                Page {{ quizzes_filter_paginated.number }} of {{ quizzes_filter_paginated.paginator.num_pages }}
+                Page {{ quizzes.number }} of {{ quizzes.paginator.num_pages }}
             </span><br>
 
-            {% if quizzes_filter_paginated.has_previous %}
-                <a href="?{% param_replace page=quizzes_filter_paginated.previous_page_number %}" class="mt-2 btn btn-outline-secondary">Back</a>
+            {% if quizzes.has_previous %}
+                <a href="?{% param_replace page=quizzes.previous_page_number %}" class="mt-2 btn btn-outline-secondary">Back</a>
             {% endif %}
 
-            {% if quizzes_filter_paginated.has_next %}
-                <a href="?{% param_replace page=quizzes_filter_paginated.next_page_number %}" class="mt-2 btn btn-outline-secondary">Next</a>
+            {% if quizzes.has_next %}
+                <a href="?{% param_replace page=quizzes.next_page_number %}" class="mt-2 btn btn-outline-secondary">Next</a>
             {% endif %}
         </span>
     </div>

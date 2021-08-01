@@ -2,6 +2,7 @@ from django.contrib.auth.decorators import login_required
 from django.core.exceptions import PermissionDenied
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.db.models import Count
+from django.db.models.functions import Lower
 from django.shortcuts import get_object_or_404, redirect
 from django.template.response import TemplateResponse
 
@@ -15,6 +16,7 @@ def list_view(request):
         .order_by("-created")
         .prefetch_related("items")
         .annotate(completions=Count("completed_quizzes"))
+        .annotate(ititle=Lower("title"))
     )
 
     current_sort_field = request.GET.get("sort_by")
@@ -22,21 +24,21 @@ def list_view(request):
     if current_sort_field:
         quizzes = quizzes.order_by(current_sort_field)
 
-    quizzes_filter = filters.QuizListFilter(request.GET, quizzes)
+    quizzes = filters.QuizListFilter(request.GET, quizzes)
 
-    paginator = Paginator(quizzes_filter.qs, 9)
+    paginator = Paginator(quizzes.qs, 9)
 
     page = request.GET.get("page")
 
     try:
-        quizzes_filter_paginated = paginator.page(page)
+        quizzes = paginator.page(page)
     except PageNotAnInteger:
-        quizzes_filter_paginated = paginator.page(1)
+        quizzes = paginator.page(1)
     except EmptyPage:
-        quizzes_filter_paginated = paginator.page(paginator.num_pages)
+        quizzes = paginator.page(paginator.num_pages)
 
     context = {
-        "quizzes_filter_paginated": quizzes_filter_paginated,
+        "quizzes": quizzes,
         "current_sort_field": current_sort_field,
     }
 
