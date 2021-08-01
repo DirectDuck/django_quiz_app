@@ -5,9 +5,10 @@ from django.shortcuts import get_object_or_404, redirect
 from django.template.response import TemplateResponse
 
 from apps.quizzes import models as quizzes_models
-from apps.reviews import verificators, forms
+from apps.reviews import verificators, forms, models
 
 
+@login_required
 def quiz_cancel_approved_view(request, slug):
     quiz = get_object_or_404(
         quizzes_models.Quiz.objects.all(),
@@ -55,6 +56,7 @@ def reviews_list_view(request):
     return TemplateResponse(request, "reviews/staff/list.html", context)
 
 
+@login_required
 def reviews_detail_view(request, slug):
     quiz = get_object_or_404(
         quizzes_models.Quiz.objects.exclude(status=quizzes_models.Quiz.Status.DRAFT),
@@ -111,6 +113,7 @@ def reviews_reject_view(request, slug):
         form = forms.QuizRejectedMessageForm(request.POST)
 
         if form.is_valid():
+            models.QuizRejectedMessage.objects.filter(quiz=quiz).delete()
             instance = form.save(commit=False)
             instance.quiz = quiz
             instance.save()
@@ -127,3 +130,26 @@ def reviews_reject_view(request, slug):
     }
 
     return TemplateResponse(request, "reviews/staff/reject.html", context)
+
+
+@login_required
+def quiz_cancel_rejected_view(request, slug):
+    quiz = get_object_or_404(
+        quizzes_models.Quiz.objects.all(),
+        slug=slug,
+    )
+
+    if not request.user == quiz.author:
+        raise PermissionDenied
+
+    suitable, message = verificators.is_quiz_suitable_for_rejected_cancel(quiz)
+
+    if not suitable:
+        messages.error(request, message)
+        return redirect("reviews:detail", slug=quiz.slug)
+
+    quiz.status = quizzes_models.Quiz.Status.REVIEW
+    quiz.published = False
+    quiz.save()
+
+    return redirect("reviews:detail", slug=quiz.slug)

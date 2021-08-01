@@ -23,7 +23,7 @@
                 {% elif quiz.status == quiz.Status.APPROVED %}
                     <a class="btn btn-outline-warning m-1" href="{% url 'reviews:staff_cancel_approved' quiz.slug %}">Cancel</a>
                 {% elif quiz.status == quiz.Status.REJECTED %}
-                    <a class="btn btn-outline-warning m-1" href="{% url 'reviews:staff_cancel_approved' quiz.slug %}">Cancel</a>
+                    <a class="btn btn-outline-warning m-1" href="{% url 'reviews:staff_cancel_reject' quiz.slug %}">Cancel</a>
                 {% endif %}
             </div>
         </div>

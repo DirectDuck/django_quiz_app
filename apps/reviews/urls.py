@@ -20,7 +20,7 @@ urlpatterns = [
     ),
     # Staff views
     path("list/", staff.reviews_list_view, name="list"),
-    path("<slug:slug>", staff.reviews_detail_view, name="detail"),
+    path("<slug:slug>/", staff.reviews_detail_view, name="detail"),
     path("<slug:slug>/approve/", staff.reviews_approve_view, name="approve"),
     path(
         "<slug:slug>/staff_cancel_approve/",
@@ -31,5 +31,10 @@ urlpatterns = [
         "<slug:slug>/reject/",
         staff.reviews_reject_view,
         name="reject",
+    ),
+    path(
+        "<slug:slug>/staff_cancel_reject/",
+        staff.quiz_cancel_rejected_view,
+        name="staff_cancel_reject",
     ),
 ]
