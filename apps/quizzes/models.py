@@ -16,7 +16,7 @@ class Quiz(models.Model):
         DRAFT = 1  # When initially created
         REVIEW = 2  # When author finishes quiz creation and staff reviews the work
         REJECTED = 3  # If admin/editor reject quiz (comes with RejectedQuizMessage)
-        APPROVED = 4  # If admin/editor approves quiz (approved quiz will be published)
+        APPROVED = 4  # If admin/editor approves quiz (approved quiz is visible in explore page)
 
     author = models.ForeignKey(
         settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name="quizzes"
@@ -26,9 +26,6 @@ class Quiz(models.Model):
     slug = models.SlugField(max_length=130, unique=True)
 
     description = models.TextField(max_length=255)
-
-    # If True, other users will see the quiz
-    published = models.BooleanField(default=False)
 
     status = models.IntegerField(
         choices=Status.choices,

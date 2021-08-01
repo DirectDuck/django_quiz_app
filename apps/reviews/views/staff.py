@@ -26,7 +26,6 @@ def quiz_cancel_approved_view(request, slug):
 
     if request.POST:
         quiz.status = quizzes_models.Quiz.Status.REVIEW
-        quiz.published = False
         quiz.save()
         return redirect("reviews:detail", slug=quiz.slug)
 
@@ -90,7 +89,6 @@ def reviews_approve_view(request, slug):
 
     if request.POST:
         quiz.status = quizzes_models.Quiz.Status.APPROVED
-        quiz.published = True
         quiz.save()
         return redirect("reviews:list")
 
@@ -151,7 +149,6 @@ def quiz_cancel_rejected_view(request, slug):
         return redirect("reviews:detail", slug=quiz.slug)
 
     quiz.status = quizzes_models.Quiz.Status.REVIEW
-    quiz.published = False
     quiz.save()
 
     return redirect("reviews:detail", slug=quiz.slug)

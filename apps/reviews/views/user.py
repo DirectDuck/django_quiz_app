@@ -78,7 +78,6 @@ def quiz_cancel_approved_view(request, slug):
 
     if request.POST:
         quiz.status = quizzes_models.Quiz.Status.DRAFT
-        quiz.published = False
         quiz.save()
         return redirect("quizzes:detail", slug=quiz.slug)
 
