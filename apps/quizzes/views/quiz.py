@@ -1,5 +1,6 @@
 from django.contrib.auth.decorators import login_required
 from django.core.exceptions import PermissionDenied
+from django.db.models import Count
 from django.shortcuts import get_object_or_404, redirect
 from django.template.response import TemplateResponse
 
@@ -12,12 +13,19 @@ def list_view(request):
         models.Quiz.objects.filter(author=request.user)
         .order_by("-created")
         .prefetch_related("items")
+        .annotate(completions=Count("completed_quizzes"))
     )
+
+    current_sort_field = request.GET.get("sort_by")
+
+    if current_sort_field:
+        quizzes = quizzes.order_by(current_sort_field)
 
     quizzes_filter = filters.QuizListFilter(request.GET, quizzes)
 
     context = {
         "quizzes_filter": quizzes_filter,
+        "current_sort_field": current_sort_field,
     }
 
     return TemplateResponse(request, "quizzes/quiz/list.html", context)

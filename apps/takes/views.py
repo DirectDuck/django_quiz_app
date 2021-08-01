@@ -1,6 +1,7 @@
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.core.exceptions import PermissionDenied
+from django.db.models import Count
 from django.forms import formset_factory
 from django.shortcuts import get_object_or_404, redirect
 from django.template.response import TemplateResponse
@@ -121,9 +122,11 @@ def quiz_tryout_results_view(request, slug):
 
 
 def quiz_explore_view(request):
-    quizzes = quizzes_models.Quiz.objects.filter(
-        status=quizzes_models.Quiz.Status.APPROVED
-    ).prefetch_related("items")
+    quizzes = (
+        quizzes_models.Quiz.objects.filter(status=quizzes_models.Quiz.Status.APPROVED)
+        .annotate(completions=Count("completed_quizzes"))
+        .prefetch_related("items")
+    )
 
     current_sort_field = request.GET.get("sort_by")
 

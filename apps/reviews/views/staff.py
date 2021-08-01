@@ -1,6 +1,7 @@
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.core.exceptions import PermissionDenied
+from django.db.models import Count
 from django.shortcuts import get_object_or_404, redirect
 from django.template.response import TemplateResponse
 
@@ -46,12 +47,19 @@ def reviews_list_view(request):
         quizzes_models.Quiz.objects.exclude(status=quizzes_models.Quiz.Status.DRAFT)
         .order_by("-created")
         .prefetch_related("items")
+        .annotate(completions=Count("completed_quizzes"))
     )
+
+    current_sort_field = request.GET.get("sort_by")
+
+    if current_sort_field:
+        quizzes = quizzes.order_by(current_sort_field)
 
     quizzes_filter = filters.QuizReviewFilter(request.GET, quizzes)
 
     context = {
         "quizzes_filter": quizzes_filter,
+        "current_sort_field": current_sort_field,
     }
 
     return TemplateResponse(request, "reviews/staff/list.html", context)

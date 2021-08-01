@@ -1,6 +1,7 @@
 {% extends '_base.html' %}
 
 {% load crispy_forms_tags %}
+{% load sorting_tags %}
 
 
 {% block title %}Reviews List | DQA{% endblock title %}
@@ -8,8 +9,15 @@
 {% block content %}
 <div class="row gx-5 justify-content-center">
     <div class="col-lg-8 col-xl-6">
-        <div class='text-center mb-4'>
+        <div class='text-center mb-3'>
             <h2 class="mb-3">Reviews List</h2>
+            <div class="fs-5" style="color: #9c9c9c;">
+                {% sort_link "Title" "title" %}
+                &middot;
+                {% sort_link "Created" "created" %}
+                &middot;
+                {% sort_link "Completions" "completions" %}
+            </div>
         </div>
         <form method="get" class="mb-4 offset-xl-4 col-xl-4" id="filter_form">
             {{ quizzes_filter.form|crispy }}

@@ -1,6 +1,7 @@
 {% extends '_base.html' %}
 
 {% load crispy_forms_tags %}
+{% load sorting_tags %}
 
 
 {% block title %}Quizzes List | DQA{% endblock title %}
@@ -8,10 +9,17 @@
 {% block content %}
 <div class="row gx-5 justify-content-center">
     <div class="col-lg-8 col-xl-6">
-        <div class='text-center mb-4'>
+        <div class='text-center mb-3'>
             <h2 class="mb-3">Quizzes List</h2>
             <p>Here's what you have created so far</p>
-            <a class="btn btn-outline-success mt-2" href="{% url 'quizzes:create' %}">Create</a>
+            <a class="btn btn-outline-success mt-2 mb-3" href="{% url 'quizzes:create' %}">Create</a>
+            <div class="fs-5" style="color: #9c9c9c;">
+                {% sort_link "Title" "title" %}
+                &middot;
+                {% sort_link "Created" "created" %}
+                &middot;
+                {% sort_link "Completions" "completions" %}
+            </div>
         </div>
         <form method="get" class="mb-4 offset-xl-4 col-xl-4" id="filter_form">
             {{ quizzes_filter.form|crispy }}
@@ -32,7 +40,7 @@
                     <div class="d-flex align-items-center">
                         <div class="small">
                             <div class="fw-bold">{{ quiz.author.username }}</div>
-                            <div class="text-muted">{{ quiz.items.count }} questions</div>
+                            <div class="text-muted">{{ quiz.items.count }} questions &middot; {{ quiz.completions }} completions</div>
                         </div>
                     </div>
                 </div>
