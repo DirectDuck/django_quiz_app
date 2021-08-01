@@ -1,5 +1,6 @@
 from django.contrib.auth.decorators import login_required
 from django.core.exceptions import PermissionDenied
+from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.db.models import Count
 from django.shortcuts import get_object_or_404, redirect
 from django.template.response import TemplateResponse
@@ -23,8 +24,19 @@ def list_view(request):
 
     quizzes_filter = filters.QuizListFilter(request.GET, quizzes)
 
+    paginator = Paginator(quizzes_filter.qs, 9)
+
+    page = request.GET.get("page")
+
+    try:
+        quizzes_filter_paginated = paginator.page(page)
+    except PageNotAnInteger:
+        quizzes_filter_paginated = paginator.page(1)
+    except EmptyPage:
+        quizzes_filter_paginated = paginator.page(paginator.num_pages)
+
     context = {
-        "quizzes_filter": quizzes_filter,
+        "quizzes_filter_paginated": quizzes_filter_paginated,
         "current_sort_field": current_sort_field,
     }
 
