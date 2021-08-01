@@ -27,7 +27,7 @@ urlpatterns = disabled_urls + [
     path("", include("apps.pages.urls", namespace="pages")),
     path("", include("apps.users.urls", namespace="users")),
     path("quizzes/", include("apps.quizzes.urls", namespace="quizzes")),
-    path("take/", include("apps.takes.urls", namespace="takes")),
+    path("", include("apps.takes.urls", namespace="takes")),
     path("review/", include("apps.reviews.urls", namespace="reviews")),
 ]
 

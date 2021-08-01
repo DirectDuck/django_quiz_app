@@ -4,7 +4,7 @@
 {% load static %}
 
 
-{% block title %}Quiz Tryout | DQA{% endblock title %}
+{% block title %}Quiz Take | DQA{% endblock title %}
 
 {% block content %}
 <div class="row gx-5 justify-content-center">
@@ -15,30 +15,26 @@
         </div>
         <form method="post">{% csrf_token %}
             <!-- Rendering formset errors -->
-            {% if quiz_item_tryout_formset.non_form_errors %}
+            {% if quiz_item_take_formset.non_form_errors %}
                 <div class="alert alert-block alert-danger offset-sm-2 col-sm-8">
-                    {% for error in quiz_item_tryout_formset.non_form_errors %}
+                    {% for error in quiz_item_take_formset.non_form_errors %}
                         {{ error }}
                     {% endfor %}
                 </div>
             {% endif %}
 
-            {% for form in quiz_item_tryout_formset %}
+            {% for form in quiz_item_take_formset %}
                 <div class="row form-container align-items-center">
                     <div class="offset-sm-2 col-sm-6 form-group">
                         {{ form.answers|as_crispy_field }}
                     </div>
                 </div>
             {% endfor %}
-            {{ quiz_item_tryout_formset.management_form }}
+            {{ quiz_item_take_formset.management_form }}
 
             <div class="d-flex justify-content-center mt-3">
                 <button class="btn btn-outline-primary mx-1" type="submit">Submit</button>
-                {% if request.user.is_staff and quiz.status == quiz.Status.REVIEW %}
-                    <a class="btn btn-outline-secondary mx-1" href="{% url 'reviews:detail' quiz.slug %}">Cancel</a>
-                {% else %}
-                    <a class="btn btn-outline-secondary mx-1" href="{% url 'quizzes:detail' quiz.slug %}">Cancel</a>
-                {% endif %}
+                <a class="btn btn-outline-secondary mx-1" href="{% url 'takes:explore' %}">Cancel</a>
             </div>
         </form>
     </div>

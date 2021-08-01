@@ -41,7 +41,7 @@ def user_profile_view(request):
 def resend_verification_email_view(request):
     try:
         user_email = EmailAddress.objects.get(user=request.user)
-    except:
+    except EmailAddress.DoesNotExist:
         # Creating e-mail object in case user was not created
         # via allauth
         user_email = EmailAddress.objects.create(

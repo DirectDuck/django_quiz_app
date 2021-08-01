@@ -112,6 +112,12 @@ class CompletedQuiz(models.Model):
 
         return quiz_result.first().text
 
+    @classmethod
+    def remove_previous(cls, user, quiz):
+        """Remove previous CompletedTryout instances for given user/quiz pair"""
+
+        cls.objects.filter(user=user, quiz=quiz).delete()
+
 
 class CompletedQuizAnswer(models.Model):
     """Model to store user answers for tryout"""

@@ -23,16 +23,13 @@ def quiz_tryout_view(request, slug):
         messages.error(request, message)
         return redirect("quizzes:detail", slug=quiz.slug)
 
-    # Removing previous CompletedTryouts from this user/quiz pair
-    models.CompletedTryout.remove_previous(request.user, quiz)
-
     # Getting number of quiz items (questions)
     quiz_items_count = quiz.items.count()
 
     # Creating formset from QuizItemTryoutForm
     QuizItemTryoutFormSet = formset_factory(
-        forms.QuizItemTryoutForm,
-        formset=forms.BaseQuizItemTryoutFormSet,
+        forms.QuizItemForm,
+        formset=forms.BaseQuizItemFormSet,
         # Setting number of forms to be equal to number of questions
         extra=quiz_items_count,
     )
@@ -49,6 +46,9 @@ def quiz_tryout_view(request, slug):
         )
 
         if quiz_item_tryout_formset.is_valid():
+            # Removing previous CompletedTryouts from this user/quiz pair
+            models.CompletedTryout.remove_previous(request.user, quiz)
+
             # Creating CompletedTryout object
             completed_tryout = models.CompletedTryout.objects.create(
                 user=request.user, quiz=quiz, score=0
@@ -74,7 +74,7 @@ def quiz_tryout_view(request, slug):
             return redirect("takes:tryout_results", slug=quiz.slug)
     else:
         # Just in case you are wondering: form_kwargs argument
-        # will be interceipt in BaseQuizItemTryoutFormSet method
+        # will be interceipt in BaseQuizItemFormSet method
         # and there we will get quiz_item from quiz_item_list,
         # that is required to build the form itself.
         # There are many ways you can achieve that behavior, but
@@ -136,3 +136,94 @@ def quiz_explore_view(request):
     }
 
     return TemplateResponse(request, "takes/explore.html", context)
+
+
+@login_required
+def quiz_take_view(request, slug):
+    quiz = get_object_or_404(
+        quizzes_models.Quiz.objects.filter(status=quizzes_models.Quiz.Status.APPROVED),
+        slug=slug,
+    )
+
+    quiz_items_count = quiz.items.count()
+
+    QuizItemTakeFormSet = formset_factory(
+        forms.QuizItemForm,
+        formset=forms.BaseQuizItemFormSet,
+        extra=quiz_items_count,
+    )
+
+    if request.POST:
+        quiz_item_take_formset = QuizItemTakeFormSet(
+            request.POST,
+            form_kwargs={
+                "quiz_item_list": list(
+                    quiz.items.order_by("index").prefetch_related("answers")
+                ),
+            },
+        )
+
+        if quiz_item_take_formset.is_valid():
+            models.CompletedQuiz.remove_previous(request.user, quiz)
+
+            # Creating CompletedQuiz object
+            completed_quiz = models.CompletedQuiz.objects.create(
+                user=request.user, quiz=quiz, score=0
+            )
+
+            # Creating related to CompletedQuiz CompletedQuizAnswer
+            # objects from form data
+            completed_quiz_answers = []
+            for form in quiz_item_take_formset:
+                completed_quiz_answers.append(
+                    models.CompletedQuizAnswer.initialize_from_answer_pk(
+                        completed_quiz,
+                        int(form.cleaned_data["answers"]),
+                    )
+                )
+
+            models.CompletedQuizAnswer.objects.bulk_create(completed_quiz_answers)
+
+            # Updating CompletedTryout score to match number of correct answers
+            # from related CompletedQuizAnswer
+            completed_quiz.update_score()
+
+            return redirect("takes:take_results", slug=quiz.slug)
+    else:
+        quiz_item_take_formset = QuizItemTakeFormSet(
+            form_kwargs={
+                "quiz_item_list": list(
+                    quiz.items.order_by("index").prefetch_related("answers")
+                ),
+            }
+        )
+
+    context = {
+        "quiz": quiz,
+        "quiz_items_count": quiz_items_count,
+        "quiz_item_take_formset": quiz_item_take_formset,
+    }
+
+    return TemplateResponse(request, "takes/take.html", context)
+
+
+@login_required
+def quiz_take_results_view(request, slug):
+    quiz = get_object_or_404(
+        quizzes_models.Quiz.objects.filter(status=quizzes_models.Quiz.Status.APPROVED),
+        slug=slug,
+    )
+
+    completed_quiz = get_object_or_404(
+        models.CompletedQuiz.objects.all(), user=request.user, quiz=quiz
+    )
+
+    quiz_items_count = quiz.items.count()
+
+    context = {
+        "quiz": quiz,
+        "quiz_items_count": quiz_items_count,
+        "completed_quiz": completed_quiz,
+    }
+
+    return TemplateResponse(request, "takes/take_results.html", context)

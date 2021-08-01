@@ -4,3 +4,4 @@ from . import models
 
 
 admin.site.register(models.CompletedTryout)
+admin.site.register(models.CompletedQuiz)

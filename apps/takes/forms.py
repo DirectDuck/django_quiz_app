@@ -1,7 +1,7 @@
 from django import forms
 
 
-class QuizItemTryoutForm(forms.Form):
+class QuizItemForm(forms.Form):
 
     answers = forms.ChoiceField(widget=forms.RadioSelect(attrs={"required": True}))
 
@@ -31,7 +31,7 @@ class QuizItemTryoutForm(forms.Form):
         )
 
 
-class BaseQuizItemTryoutFormSet(forms.BaseFormSet):
+class BaseQuizItemFormSet(forms.BaseFormSet):
     def get_form_kwargs(self, index):
         """This method is used to pass quiz_item from given queryset
         to form as an argument"""

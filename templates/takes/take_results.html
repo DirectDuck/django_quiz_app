@@ -1,0 +1,24 @@
+{% extends '_base.html' %}
+
+{% load crispy_forms_tags %}
+{% load static %}
+
+
+{% block title %}Quiz Take Results | DQA{% endblock title %}
+
+{% block content %}
+<div class="row gx-5 justify-content-center">
+    <div class="col-lg-8 col-xl-10">
+        <div class='text-center mb-3'>
+            <h2 class="mb-3">{{ quiz.title }}</h2>
+            <h5 class="mb-3">Score: {{ completed_quiz.score }} / {{ quiz_items_count }}</h5>
+            <p>{{ completed_quiz.get_result_message }}</p>
+        </div>
+
+        <div class="d-flex justify-content-center mt-3">
+            <a class="btn btn-outline-primary mx-1" href="{% url 'takes:take' quiz.slug %}">Retake</a>
+            <a class="btn btn-outline-secondary mx-1" href="{% url 'takes:explore' %}">Cancel</a>
+        </div>
+    </div>
+</div>
+{% endblock content %}
