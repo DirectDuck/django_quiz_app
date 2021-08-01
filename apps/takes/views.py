@@ -9,6 +9,7 @@ from apps.quizzes import models as quizzes_models
 from . import forms, models, verificators
 
 
+@login_required
 def quiz_tryout_view(request, slug):
     quiz = get_object_or_404(quizzes_models.Quiz.objects.all(), slug=slug)
 
