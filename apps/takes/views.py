@@ -6,7 +6,7 @@ from django.shortcuts import get_object_or_404, redirect
 from django.template.response import TemplateResponse
 
 from apps.quizzes import models as quizzes_models
-from . import forms, models, verificators
+from . import forms, models, verificators, filters
 
 
 @login_required
@@ -118,3 +118,21 @@ def quiz_tryout_results_view(request, slug):
     }
 
     return TemplateResponse(request, "takes/tryout_results.html", context)
+
+
+def quiz_explore_view(request):
+    quizzes = quizzes_models.Quiz.objects.filter(
+        status=quizzes_models.Quiz.Status.APPROVED
+    ).prefetch_related("items")
+
+    current_sort_field = request.GET.get("sort_by")
+
+    if current_sort_field:
+        quizzes = quizzes.order_by(current_sort_field)
+
+    context = {
+        "quizzes": quizzes,
+        "current_sort_field": request.GET.get("sort_by"),
+    }
+
+    return TemplateResponse(request, "takes/explore.html", context)
