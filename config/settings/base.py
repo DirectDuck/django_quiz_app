@@ -74,11 +74,6 @@ TEMPLATES = [
 WSGI_APPLICATION = "config.wsgi.application"
 
 
-# Database
-
-DATABASES = {"default": env.db()}
-
-
 # Password validation
 
 AUTH_PASSWORD_VALIDATORS = [
