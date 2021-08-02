@@ -1,6 +1,8 @@
 from .base import *
 
 
+DEBUG = True
+
 # Debug toolbar
 
 INSTALLED_APPS += ["debug_toolbar"]
