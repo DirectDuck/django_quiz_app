@@ -23,7 +23,7 @@
             </div>
         </div>
         <form method="get" class="mb-4 offset-xl-4 col-xl-4" id="filter_form">
-            {{ quizzes_filter.form|crispy }}
+            {{ filter_form|crispy }}
         </form>
     </div>
 </div>
@@ -67,6 +67,7 @@
             {% endif %}
         </span>
     </div>
+
 </div>
 {% endblock content %}
 

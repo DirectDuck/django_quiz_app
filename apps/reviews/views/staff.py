@@ -1,6 +1,7 @@
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.core.exceptions import PermissionDenied
+from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.db.models import Count
 from django.shortcuts import get_object_or_404, redirect
 from django.template.response import TemplateResponse
@@ -55,10 +56,24 @@ def reviews_list_view(request):
     if current_sort_field:
         quizzes = quizzes.order_by(current_sort_field)
 
-    quizzes_filter = filters.QuizReviewFilter(request.GET, quizzes)
+    quizzes = filters.QuizReviewFilter(request.GET, quizzes)
+
+    filter_form = quizzes.form
+
+    paginator = Paginator(quizzes.qs, 9)
+
+    page = request.GET.get("page")
+
+    try:
+        quizzes = paginator.page(page)
+    except PageNotAnInteger:
+        quizzes = paginator.page(1)
+    except EmptyPage:
+        quizzes = paginator.page(paginator.num_pages)
 
     context = {
-        "quizzes_filter": quizzes_filter,
+        "quizzes": quizzes,
+        "filter_form": filter_form,
         "current_sort_field": current_sort_field,
     }
 

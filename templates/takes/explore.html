@@ -2,6 +2,7 @@
 
 {% load crispy_forms_tags %}
 {% load sorting_tags %}
+{% load param_replace %}
 
 
 {% block title %}Explore | DQA{% endblock title %}
@@ -17,6 +18,8 @@
                 {% sort_link "Created" "created" %}
                 &middot;
                 {% sort_link "Completions" "completions" %}
+                &middot;
+                {% sort_link "Done" "completed" %}
             </div>
         </div>
     </div>
@@ -26,6 +29,9 @@
     <div class="col-lg-4 mb-5">
         <div class="card h-100 shadow border-1">
             <div class="card-body p-4">
+                {% if quiz.completed %}
+                    <div class="badge bg-success bg-gradient mb-2">Done</div>
+                {% endif %}
                 <a class="text-decoration-none link-dark stretched-link" href="{% url 'takes:take' quiz.slug %}"><h5 class="card-title mb-3">{{ quiz.title }}</h5></a>
                 <p class="card-text mb-0">{{ quiz.description }}</p>
             </div>
@@ -44,6 +50,23 @@
     {% empty %}
         <p class="text-center">Nothing here just yet...</p>
     {% endfor %}
+
+    <div class="d-flex mt-2 justify-content-center text-center">
+        <span class="step-links">
+            <span class="current">
+                Page {{ quizzes.number }} of {{ quizzes.paginator.num_pages }}
+            </span><br>
+
+            {% if quizzes.has_previous %}
+                <a href="?{% param_replace page=quizzes.previous_page_number %}" class="mt-2 btn btn-outline-secondary">Back</a>
+            {% endif %}
+
+            {% if quizzes.has_next %}
+                <a href="?{% param_replace page=quizzes.next_page_number %}" class="mt-2 btn btn-outline-secondary">Next</a>
+            {% endif %}
+        </span>
+    </div>
+
 </div>
 {% endblock content %}
 

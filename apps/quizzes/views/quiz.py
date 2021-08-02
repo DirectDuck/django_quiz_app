@@ -26,6 +26,8 @@ def list_view(request):
 
     quizzes = filters.QuizListFilter(request.GET, quizzes)
 
+    filter_form = quizzes.form
+
     paginator = Paginator(quizzes.qs, 9)
 
     page = request.GET.get("page")
@@ -39,6 +41,7 @@ def list_view(request):
 
     context = {
         "quizzes": quizzes,
+        "filter_form": filter_form,
         "current_sort_field": current_sort_field,
     }
 

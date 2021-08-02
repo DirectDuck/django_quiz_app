@@ -1,7 +1,8 @@
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.core.exceptions import PermissionDenied
-from django.db.models import Count
+from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
+from django.db.models import Count, Case, When, BooleanField
 from django.forms import formset_factory
 from django.shortcuts import get_object_or_404, redirect
 from django.template.response import TemplateResponse
@@ -126,12 +127,30 @@ def quiz_explore_view(request):
         quizzes_models.Quiz.objects.filter(status=quizzes_models.Quiz.Status.APPROVED)
         .annotate(completions=Count("completed_quizzes"))
         .prefetch_related("items")
+        .annotate(
+            completed=Case(
+                When(completed_quizzes__user=request.user, then=True),
+                default=False,
+                output_field=BooleanField(),
+            )
+        )
     )
 
     current_sort_field = request.GET.get("sort_by")
 
     if current_sort_field:
         quizzes = quizzes.order_by(current_sort_field)
+
+    paginator = Paginator(quizzes, 9)
+
+    page = request.GET.get("page")
+
+    try:
+        quizzes = paginator.page(page)
+    except PageNotAnInteger:
+        quizzes = paginator.page(1)
+    except EmptyPage:
+        quizzes = paginator.page(paginator.num_pages)
 
     context = {
         "quizzes": quizzes,
