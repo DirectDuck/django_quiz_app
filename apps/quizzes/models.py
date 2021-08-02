@@ -116,6 +116,10 @@ class Quiz(models.Model):
             for result in self.results.filter(score__gt=items_count):
                 result.delete()
 
+    def completed_by(self, user):
+        """Check if user completed this quiz"""
+        return self.completed_quizzes.filter(user=user).exists()
+
 
 class QuizItem(models.Model):
     """Model representing container for single question-answers item

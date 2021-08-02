@@ -129,23 +129,6 @@ def quiz_explore_view(request):
         .prefetch_related("items")
     )
 
-    # if request.user.is_authenticated:
-    #     quizzes = quizzes.distinct().annotate(
-    #         completed=Case(
-    #             When(completed_quizzes__user=request.user, then=True),
-    #             default=False,
-    #             output_field=BooleanField(),
-    #         )
-    #     ).filter()
-    # else:
-    #     quizzes = quizzes.annotate(completed=Value(False))
-
-    for quiz in quizzes:
-        if quiz.completed_quizzes.filter(user=request.user).exists():
-            quiz.completed = True
-        else:
-            quiz.completed = False
-
     current_sort_field = request.GET.get("sort_by")
 
     if current_sort_field:
