@@ -73,7 +73,10 @@ class Quiz(models.Model):
     def get_available_item_index(self):
         """Get free index based on quiz items presented"""
 
-        index = self.items.order_by("-index")[0].index + 1
+        if self.items.all().exists():
+            index = self.items.order_by("-index")[0].index + 1
+        else:
+            index = 1
 
         return index
 
