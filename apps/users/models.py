@@ -11,7 +11,9 @@ class User(AbstractUser):
 
     uuid = models.UUIDField(default=uuid.uuid4, unique=True)
 
-    def is_email_verified(self):
-        """Get email verification status"""
+    # E-mail verification temporarily disabled
 
-        return EmailAddress.objects.get(user=self).verified
+    # def is_email_verified(self):
+    #     """Get email verification status"""
+
+    #     return EmailAddress.objects.get(user=self).verified
