@@ -5,6 +5,9 @@ DEBUG = False
 
 ALLOWED_HOSTS = env("ALLOWED_HOSTS").split(",")
 
+
+# Database config
+
 DATABASES = {
     "default": {
         "ENGINE": "django.db.backends.postgresql_psycopg2",
