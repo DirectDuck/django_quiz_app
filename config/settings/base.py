@@ -138,11 +138,6 @@ LOGIN_URL = "account_login"
 SITE_ID = 1
 
 
-# Email
-
-EMAIL_BACKEND = "django.core.mail.backends.console.EmailBackend"
-
-
 # Allauth
 
 ACCOUNT_LOGOUT_REDIRECT_URL = "account_login"

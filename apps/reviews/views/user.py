@@ -18,10 +18,9 @@ def quiz_submit_for_review_view(request, slug):
     if not request.user == quiz.author:
         raise PermissionDenied
 
-    # Temporary disable
-    # if not request.user.is_email_verified():
-    #     messages.error(request, "You can't submit quiz with unverified e-mail.")
-    #     return redirect("quizzes:detail", slug=quiz.slug)
+    if not request.user.is_email_verified():
+        messages.error(request, "You can't submit quiz with unverified e-mail.")
+        return redirect("quizzes:detail", slug=quiz.slug)
 
     suitable, message = verificators.is_quiz_suitable_for_submission(quiz)
 
