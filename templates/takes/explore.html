@@ -28,7 +28,7 @@
     <div class="col-lg-4 mb-5">
         <div class="card h-100 shadow border-1">
             <div class="card-body p-4">
-                {% if quiz|completed_by:request.user %}
+                {% if request.user.is_authenticated and quiz|completed_by:request.user %}
                     <div class="badge bg-success bg-gradient mb-2">Done</div>
                 {% endif %}
                 <a class="text-decoration-none link-dark stretched-link" href="{% url 'takes:take' quiz.slug %}"><h5 class="card-title mb-3">{{ quiz.title }}</h5></a>
