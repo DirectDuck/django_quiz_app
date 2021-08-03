@@ -244,3 +244,40 @@ def quiz_take_results_view(request, slug):
     }
 
     return TemplateResponse(request, "takes/take_results.html", context)
+
+
+@login_required
+def quiz_user_results_view(request):
+
+    completed_quizzes = (
+        request.user.completed_quizzes.filter(
+            quiz__status=quizzes_models.Quiz.Status.APPROVED,
+        )
+        .select_related("quiz")
+        .prefetch_related("quiz__items")
+    )
+
+    current_sort_field = request.GET.get("sort_by")
+
+    if current_sort_field:
+        completed_quizzes = completed_quizzes.order_by(current_sort_field)
+    else:
+        completed_quizzes = completed_quizzes.order_by("-created")
+
+    paginator = Paginator(completed_quizzes, 9)
+
+    page = request.GET.get("page")
+
+    try:
+        completed_quizzes = paginator.page(page)
+    except PageNotAnInteger:
+        completed_quizzes = paginator.page(1)
+    except EmptyPage:
+        completed_quizzes = paginator.page(paginator.num_pages)
+
+    context = {
+        "completed_quizzes": completed_quizzes,
+        "current_sort_field": request.GET.get("sort_by"),
+    }
+
+    return TemplateResponse(request, "takes/results.html", context)

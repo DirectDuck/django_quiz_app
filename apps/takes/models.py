@@ -92,6 +92,8 @@ class CompletedQuiz(models.Model):
 
     score = models.PositiveIntegerField()
 
+    created = models.DateTimeField(auto_now_add=True)
+
     def update_score(self):
         """Update score based on number of correct answers
         in related CompletedQuizAnswer objects"""

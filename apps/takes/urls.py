@@ -7,6 +7,7 @@ app_name = "takes"
 
 urlpatterns = [
     path("explore/", views.quiz_explore_view, name="explore"),
+    path("results/", views.quiz_user_results_view, name="results"),
     path("tryout/<slug:slug>/", views.quiz_tryout_view, name="tryout"),
     path(
         "tryout/<slug:slug>/results/",
