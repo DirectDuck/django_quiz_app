@@ -11,6 +11,7 @@
         <div class='text-center'>
             <h2>Sign up</h2>
             <p>Already have an account?<a href="{% url 'account_login' %}" class="btn btn-outline-info ms-2">Log In</a></p>
+            <p>Please note that verification e-mail will be sent from my personal e-mail address (since there is no serious production whatsoever), so It will probably end up in spam folder.</p>
         </div>
         <form method="post">{% csrf_token %}
             {{ form|crispy }}
