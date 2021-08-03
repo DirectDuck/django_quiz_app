@@ -23,6 +23,10 @@
   width: 70px;
 }
 
+.pagination-btn {
+  width: 90px;
+}
+
 :root {
   --bs-blue: #0d6efd;
   --bs-indigo: #6610f2;

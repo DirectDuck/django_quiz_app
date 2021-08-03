@@ -51,11 +51,11 @@
             </span><br>
 
             {% if completed_quizzes.has_previous %}
-                <a href="?{% param_replace page=completed_quizzes.previous_page_number %}" class="mt-2 btn btn-outline-secondary">Back</a>
+                <a href="?{% param_replace page=completed_quizzes.previous_page_number %}" class="mt-2 btn btn-outline-secondary pagination-btn">Previous</a>
             {% endif %}
 
             {% if completed_quizzes.has_next %}
-                <a href="?{% param_replace page=completed_quizzes.next_page_number %}" class="mt-2 btn btn-outline-secondary">Next</a>
+                <a href="?{% param_replace page=completed_quizzes.next_page_number %}" class="mt-2 btn btn-outline-secondary pagination-btn">Next</a>
             {% endif %}
         </span>
     </div>
