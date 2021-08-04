@@ -19,14 +19,20 @@ def list_view(request):
         .annotate(ititle=Lower("title"))
     )
 
+    # Sorting
+
     current_sort_field = request.GET.get("sort_by")
 
     if current_sort_field:
         quizzes = quizzes.order_by(current_sort_field)
 
+    # Filtering
+
     quizzes = filters.QuizListFilter(request.GET, quizzes)
 
     filter_form = quizzes.form
+
+    # Paginating
 
     paginator = Paginator(quizzes.qs, 9)
 
