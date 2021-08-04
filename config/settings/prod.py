@@ -47,7 +47,7 @@ CSRF_COOKIE_SECURE = True
 
 INSTALLED_APPS += ["django_otp", "django_otp.plugins.otp_totp"]
 
-MIDDLEWARE += "django_otp.middleware.OTPMiddleware"
+MIDDLEWARE += ["django_otp.middleware.OTPMiddleware"]
 
 
 # Sentry
