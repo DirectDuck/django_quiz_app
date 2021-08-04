@@ -45,7 +45,7 @@ CSRF_COOKIE_SECURE = True
 
 # Django-admin two-factor auth
 
-INSTALLED_APPS += ["django_otp" "django_otp.plugins.otp_totp"]
+INSTALLED_APPS += ["django_otp", "django_otp.plugins.otp_totp"]
 
 MIDDLEWARE += "django_otp.middleware.OTPMiddleware"
 
