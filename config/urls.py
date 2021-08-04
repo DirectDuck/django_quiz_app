@@ -4,6 +4,12 @@ from django.urls import path, include
 from django.views import defaults
 
 
+if not settings.DEBUG:
+    from django_otp.admin import OTPAdminSite
+
+    admin.site.__class__ = OTPAdminSite
+
+
 # Disable unused urls from 3rd party libraries
 disabled_urls = [
     path(
