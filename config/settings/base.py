@@ -35,6 +35,9 @@ INSTALLED_APPS = [
     "crispy_bootstrap5",
     "django_sorting_bootstrap",
     "rest_framework",
+    "rest_framework.authtoken",
+    "dj_rest_auth",
+    "dj_rest_auth.registration",
     # local
     "apps.core",
     "apps.users",
@@ -154,3 +157,15 @@ ACCOUNT_EMAIL_CONFIRMATION_HMAC = False
 CRISPY_ALLOWED_TEMPLATE_PACKS = "bootstrap5"
 
 CRISPY_TEMPLATE_PACK = "bootstrap5"
+
+
+# Django Rest Framework
+
+REST_FRAMEWORK = {
+    "DEFAULT_AUTHENTICATION_CLASSES": [
+        "rest_framework.authentication.TokenAuthentication",
+    ],
+    "DEFAULT_PERMISSION_CLASSES": [
+        "rest_framework.permissions.IsAuthenticated",
+    ],
+}
