@@ -35,6 +35,7 @@ urlpatterns = disabled_urls + [
     path("quizzes/", include("apps.quizzes.urls", namespace="quizzes")),
     path("", include("apps.takes.urls", namespace="takes")),
     path("review/", include("apps.reviews.urls", namespace="reviews")),
+    path("api/v1/", include("apps.api.urls", namespace="api")),
 ]
 
 if settings.DEBUG:

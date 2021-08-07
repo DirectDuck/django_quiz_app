@@ -34,6 +34,7 @@ INSTALLED_APPS = [
     "crispy_forms",
     "crispy_bootstrap5",
     "django_sorting_bootstrap",
+    "rest_framework",
     # local
     "apps.core",
     "apps.users",
@@ -41,6 +42,7 @@ INSTALLED_APPS = [
     "apps.quizzes",
     "apps.takes",
     "apps.reviews",
+    "apps.api",
 ]
 
 MIDDLEWARE = [
