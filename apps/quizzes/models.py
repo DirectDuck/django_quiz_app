@@ -116,7 +116,7 @@ class Quiz(models.Model):
             for result in self.results.filter(score__gt=items_count):
                 result.delete()
 
-    def completed_by(self, user):
+    def is_completed_by(self, user):
         """Check if user completed this quiz"""
         return self.completed_quizzes.filter(user=user).exists()
 

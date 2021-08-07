@@ -7,4 +7,4 @@ register = template.Library()
 def completed_by(quiz, user):
     """Checks if user completed quiz"""
 
-    return quiz.completed_by(user)
+    return quiz.is_completed_by(user)
