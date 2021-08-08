@@ -140,6 +140,9 @@ class QuizItem(models.Model):
 
     index = models.PositiveIntegerField()
 
+    class Meta:
+        ordering = ["index"]
+
     def __str__(self):
         return f"{self.quiz.title} - {self.index} item"
 

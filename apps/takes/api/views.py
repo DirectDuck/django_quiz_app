@@ -4,6 +4,7 @@ from django.db.models import Count
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework.exceptions import NotAcceptable
+from rest_framework.generics import get_object_or_404
 
 from apps.api.pagination import CustomPageNumberPagination
 from apps.quizzes import models
@@ -29,9 +30,20 @@ class ExploreApiView(APIView, CustomPageNumberPagination):
         # Paginating
         quizzes = self.paginate_queryset(quizzes, request, view=self)
 
-        serializer = serializers.QuizSerializer(
+        serializer = serializers.QuizExploreSerializer(
             quizzes, many=True, context={"request": request}
         )
 
         # Adding pagination links
         return self.get_paginated_response(serializer.data)
+
+
+class QuizTakeApiView(APIView):
+    def get(self, request, slug):
+        quiz = get_object_or_404(
+            models.Quiz.objects.filter(status=models.Quiz.Status.APPROVED), slug=slug
+        )
+
+        serializer = serializers.QuizTakeSerializer(quiz)
+
+        return Response(serializer.data)

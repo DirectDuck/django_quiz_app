@@ -8,4 +8,5 @@ urlpatterns = [
     path("auth/", include("dj_rest_auth.urls")),
     path("auth/signup/", include("dj_rest_auth.registration.urls")),
     path("explore/", takes_views.ExploreApiView.as_view(), name="explore"),
+    path("take/<slug:slug>/", takes_views.QuizTakeApiView.as_view(), name="take"),
 ]

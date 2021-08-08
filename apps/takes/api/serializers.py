@@ -3,7 +3,7 @@ from rest_framework import serializers
 from apps.quizzes import models
 
 
-class QuizSerializer(serializers.ModelSerializer):
+class QuizExploreSerializer(serializers.ModelSerializer):
 
     author = serializers.StringRelatedField()
     number_of_questions = serializers.SerializerMethodField(
@@ -37,3 +37,46 @@ class QuizSerializer(serializers.ModelSerializer):
         if not request:
             raise Exception("Request object wasn't passed to serializers context")
         return obj.is_completed_by(request.user)
+
+
+class QuizItemAnswerSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = models.QuizItemAnswer
+        fields = [
+            "pk",
+            "text",
+        ]
+
+
+class QuizItemSerializer(serializers.ModelSerializer):
+
+    answers = QuizItemAnswerSerializer(many=True)
+
+    class Meta:
+        model = models.QuizItem
+        fields = ["index", "question", "answers"]
+
+
+class QuizTakeSerializer(serializers.ModelSerializer):
+
+    author = serializers.StringRelatedField()
+
+    number_of_questions = serializers.SerializerMethodField(
+        method_name="get_number_of_questions"
+    )
+
+    items = QuizItemSerializer(many=True)
+
+    class Meta:
+        model = models.Quiz
+        fields = [
+            "author",
+            "title",
+            "slug",
+            "description",
+            "number_of_questions",
+            "items",
+        ]
+
+    def get_number_of_questions(self, obj):
+        return obj.items.count()
