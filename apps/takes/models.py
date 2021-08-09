@@ -107,10 +107,7 @@ class CompletedQuiz(models.Model):
         quiz_result = self.quiz.results.filter(score=self.score)
 
         if not quiz_result.exists():
-            raise Exception(
-                "Something went wrong!"
-                "Are you sure you didn't modified quiz while trying it out?"
-            )
+            raise Exception("Something went wrong!")
 
         return quiz_result.first().text
 

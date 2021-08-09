@@ -80,3 +80,12 @@ class QuizTakeSerializer(serializers.ModelSerializer):
 
     def get_number_of_questions(self, obj):
         return obj.items.count()
+
+
+class QuizTakeItemSerializer(serializers.Serializer):
+    item_index = serializers.IntegerField()
+    answer_pk = serializers.IntegerField()
+
+    def __init__(self, *args, **kwargs):
+        self.quiz = kwargs.pop("quiz")
+        super().__init__(*args, **kwargs)
