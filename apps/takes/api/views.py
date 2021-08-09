@@ -91,3 +91,34 @@ class QuizTakeApiView(APIView):
         }
 
         return Response(response)
+
+
+class QuizTakeResultsApiView(APIView, CustomPageNumberPagination):
+    def get(self, request):
+        completed_quizzes = (
+            request.user.completed_quizzes.filter(
+                quiz__status=quizzes_models.Quiz.Status.APPROVED,
+            )
+            .select_related("quiz")
+            .prefetch_related("quiz__items")
+        )
+
+        # Sorting
+        if "sort_by" in request.GET:
+            sort_by = request.GET.get("sort_by")
+            try:
+                completed_quizzes = completed_quizzes.order_by(sort_by)
+            except FieldError:
+                raise ValidationError("Sorting by this field is not allowed")
+        else:
+            completed_quizzes = completed_quizzes.order_by("-created")
+
+        # Paginating
+        completed_quizzes = self.paginate_queryset(
+            completed_quizzes, request, view=self
+        )
+
+        serializer = serializers.CompletedQuizSerializer(completed_quizzes, many=True)
+
+        # Adding pagination links
+        return self.get_paginated_response(serializer.data)

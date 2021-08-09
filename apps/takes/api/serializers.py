@@ -1,6 +1,7 @@
 from rest_framework import serializers
 
-from apps.quizzes import models
+from apps.quizzes import models as quizzes_models
+from apps.takes import models
 
 
 class QuizExploreSerializer(serializers.ModelSerializer):
@@ -15,7 +16,7 @@ class QuizExploreSerializer(serializers.ModelSerializer):
     is_completed = serializers.SerializerMethodField(method_name="get_is_completed")
 
     class Meta:
-        model = models.Quiz
+        model = quizzes_models.Quiz
         fields = [
             "author",
             "title",
@@ -41,7 +42,7 @@ class QuizExploreSerializer(serializers.ModelSerializer):
 
 class QuizItemAnswerSerializer(serializers.ModelSerializer):
     class Meta:
-        model = models.QuizItemAnswer
+        model = quizzes_models.QuizItemAnswer
         fields = [
             "pk",
             "text",
@@ -53,7 +54,7 @@ class QuizItemSerializer(serializers.ModelSerializer):
     answers = QuizItemAnswerSerializer(many=True)
 
     class Meta:
-        model = models.QuizItem
+        model = quizzes_models.QuizItem
         fields = ["index", "question", "answers"]
 
 
@@ -68,7 +69,7 @@ class QuizTakeSerializer(serializers.ModelSerializer):
     items = QuizItemSerializer(many=True)
 
     class Meta:
-        model = models.Quiz
+        model = quizzes_models.Quiz
         fields = [
             "author",
             "title",
@@ -82,10 +83,40 @@ class QuizTakeSerializer(serializers.ModelSerializer):
         return obj.items.count()
 
 
-class QuizTakeItemSerializer(serializers.Serializer):
-    item_index = serializers.IntegerField()
-    answer_pk = serializers.IntegerField()
+class QuizShortSerializer(serializers.ModelSerializer):
 
-    def __init__(self, *args, **kwargs):
-        self.quiz = kwargs.pop("quiz")
-        super().__init__(*args, **kwargs)
+    author = serializers.StringRelatedField()
+
+    number_of_questions = serializers.SerializerMethodField(
+        method_name="get_number_of_questions"
+    )
+
+    class Meta:
+        model = quizzes_models.Quiz
+        fields = [
+            "author",
+            "title",
+            "slug",
+            "description",
+            "number_of_questions",
+        ]
+
+    def get_number_of_questions(self, obj):
+        return obj.items.count()
+
+
+class CompletedQuizSerializer(serializers.ModelSerializer):
+
+    quiz = QuizShortSerializer()
+    result_message = serializers.SerializerMethodField(method_name="get_result_message")
+
+    class Meta:
+        model = models.CompletedQuiz
+        fields = [
+            "quiz",
+            "score",
+            "result_message",
+        ]
+
+    def get_result_message(self, obj):
+        return obj.get_result_message()
